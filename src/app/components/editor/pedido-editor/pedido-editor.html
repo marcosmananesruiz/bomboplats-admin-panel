@@ -1,0 +1,61 @@
+<h3>Pedidos</h3>
+
+@if (cargandoTodos) {
+  <p>Cargando ids de pedidos...</p>
+}
+
+@if (errorTodos) {
+  <p>Se ha producido un error cargando los Ids de los pedidos :(</p>
+}
+
+@if (!cargandoTodos && !errorTodos) {
+  <label for="pedidoSelector">Selecciona el ID del Pedido: </label>
+  <select class="idSelector" name="pedidoSelector" id="pedidoSelector" [(ngModel)]="idSeleccionada" (change)="cargarPedido()">
+    @for (id of idsPedido; track $index) {
+      <option value="{{id}}">{{id}}</option>
+    }
+  </select>
+
+  @if (pedido) {
+    <form action="" class="editor">
+      <label>
+        Usuario:
+        @if (user) {
+          {{user.id}} - {{user.nickname}}
+        } @else {
+          Este pedido no tiene usuario. (De alguna forma???!?!?)
+        }
+      </label>
+      <app-user-selector (userAñadido)="cambiarUser($event)" actionText="Cambiar"></app-user-selector>
+      <label>
+        Plato:
+        @if (plato) {
+          {{plato.id}} - {{plato.nombre}}
+        } @else {
+          Este pedido no tiene plato (Tambien, de alguna forma?!?!?!??!?!)
+        }
+      </label>
+      <app-plato-selector (platoAñadido)="cambiarPlato($event)" actionText="Cambiar"></app-plato-selector>
+      <label for="estado">Estado:</label>
+      <select name="estado" id="estado" [(ngModel)]="estado">
+        <option value="PREPARING">Preparando</option>
+        <option value="DELIVERING">En Camino</option>
+        <option value="DELIVERED">Entregado</option>
+      </select>
+      <label for="entrega">Entrega:</label>
+      <input type="datetime-local" name="entrega" id="entrega" [(ngModel)]="entrega">
+      <label for="modificaciones">Modificaciones: </label>
+      @for (modif of modificaciones; track $index) {
+        <p class="deletableElement">- {{modif}}
+          <button class="remove-btn" title="Eliminar" (click)="eliminarModificacion($index)">X</button>
+        </p>
+      }
+      <app-string-input placeholder="Escriba aqui la modificacion: (Ex: Extra Bacon...)" (valorAñadido)="agregarModificacion($event)"></app-string-input>
+      <div class="form-buttons">
+        <button type="submit" (click)="update()">Actualizar</button>
+        <button type="reset" (click)="cargarDatosPedido()">Reiniciar</button>
+      </div>
+    </form>
+  }
+}
+

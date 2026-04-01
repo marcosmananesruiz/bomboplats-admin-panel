@@ -1,0 +1,27 @@
+<label for="entitySelect">Selecciona la Entidad: </label>
+<select id="entitySelect" [(ngModel)]="entitySelected">
+  <option value="usuarios">Usuarios</option>
+  <option value="direcciones">Direcciones</option>
+  <option value="platos">Platos</option>
+  <option value="restaurantes">Restaurantes</option>
+  <option value="pedidos">Pedidos</option>
+</select>
+
+@switch (entitySelected) {
+  @case ('usuarios') {
+    <app-user-display></app-user-display>
+  }
+  @case ('direcciones') {
+    <app-direccion-display></app-direccion-display>
+  }
+  @case ('platos') {
+    <app-plato-display></app-plato-display>
+  }
+  @case ('restaurantes') {
+    <app-restaurante-display></app-restaurante-display>
+  }
+  @case ('pedidos') {
+    <app-pedido-display></app-pedido-display>
+  }
+}
+

@@ -1,0 +1,37 @@
+<h3>Usuarios</h3>
+
+@if (cargando) {
+  <p>Cargando Usuarios...</p>
+}
+
+@if (error) {
+  <p>Se ha producido un error cargando los usuarios</p>
+}
+
+@if (empty) {
+  <p>No hay usuarios registrados</p>
+}
+
+@if (!cargando && !error) {
+  <div class="displayContainer">
+    @for (user of users; track $index) {
+      <div class="userDisplay">
+        <p>ID: <span>{{user.id}}</span></p>
+        <p>Nickname: <span>{{user.nickname}}</span></p>
+        <p>Email: <span>{{user.email}}</span></p>
+        <p>Icon Url: <span>{{user.iconUrl}}</span></p>
+        <p>Direcciones (ID):
+          @for (direccion of user.direcciones; track $index) {
+            <p><span>- {{direccion.id}}</span></p>
+          }
+        </p>
+        <p>Platos Favoritos (ID):
+          @for (plato of user.platosFavoritos; track $index) {
+            <p><span>- {{plato.id}}</span></p>
+          }
+        </p>
+      </div>
+    }
+  </div>
+}
+

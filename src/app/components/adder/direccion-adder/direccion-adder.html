@@ -1,0 +1,18 @@
+<h3>Direcciones</h3>
+
+<form class="adder">
+  <label for="poblacion">Población:</label>
+  <input name="poblacion" type="text" id="poblacion" [(ngModel)]="poblacion">
+  <label for="codigoPostal">Código Postal:</label>
+  <input name="codigoPostal" type="text" id="codigoPostal" [(ngModel)]="codigoPostal">
+  <label for="calle">Calle:</label>
+  <input name="calle" type="text" id="calle" [(ngModel)]="calle">
+  <label for="portal">Portal:</label>
+  <input name="portal" type="number" id="portal" [(ngModel)]="portal">
+  <label for="piso">Piso:</label>
+  <input name="piso" type="text" id="piso" [(ngModel)]="piso">
+  <div class="form-buttons">
+    <button type="submit" (click)="registrarDireccion()">Guardar</button>
+    <button type="reset">Eliminar</button>
+  </div>
+</form>

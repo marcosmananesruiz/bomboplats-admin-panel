@@ -1,0 +1,33 @@
+<h3>Pedidos</h3>
+
+@if (error) {
+  <p>Se ha producido un error con los Pedidos</p>
+}
+
+@if (cargando) {
+  <p>Cargando Pedidos...</p>
+}
+
+@if (empty) {
+  <p>No hay pedidos registrados</p>
+}
+
+@if (!cargando && !error) {
+  <div class="displayContainer">
+    @for (pedido of pedidos; track $index) {
+      <div class="userDisplay">
+        <p>ID: <span>{{pedido.id}}</span></p>
+        <p>ID Usuario: <span>{{pedido.user?.id}}</span></p>
+        <p>ID Plato: <span>{{pedido.plato?.id}}</span></p>
+        <p>Estado: <span>{{pedido.estado}}</span></p>
+        <p>Entrega: <span>{{pedido.entrega}}</span></p>
+        <p>
+          Modificaciones:
+          @for (modif of pedido.modifications; track $index) {
+            <span>{{modif}}, </span>
+          }
+        </p>
+      </div>
+    }
+  </div>
+}

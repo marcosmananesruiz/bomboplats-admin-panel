@@ -1,0 +1,25 @@
+.userDisplay {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #4a2c7d;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.userDisplay p {
+  font-weight: bold;
+  margin: 0.25rem 0;
+}
+
+.userDisplay span {
+  font-weight: 400;
+}
+
+.displayContainer {
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  padding-right: 0.5rem;
+  clear: both;
+}

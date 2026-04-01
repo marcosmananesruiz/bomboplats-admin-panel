@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.main_header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #6320ff;
+  border-bottom: 1px solid #ddd;
+}

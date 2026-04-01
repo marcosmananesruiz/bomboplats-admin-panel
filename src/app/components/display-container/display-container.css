@@ -1,0 +1,27 @@
+(/* Estilos para selects en display-container */)
+label {
+	font-weight: bold;
+	margin-bottom: 0.25rem;
+	display: block;
+}
+
+select {
+	padding: 0.5rem;
+	border: 1px solid #6b4a9f;
+	border-radius: 0.25rem;
+	background-color: #6b4a9f;
+	color: #ffffff;
+	font-weight: 400;
+}
+
+select:focus {
+	outline: none;
+	border-color: #7744ff;
+	background-color: #5a3a8f;
+}
+
+select option {
+	background-color: #4a2c7d;
+	color: #ffffff;
+}
+

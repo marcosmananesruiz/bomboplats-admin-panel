@@ -1,0 +1,46 @@
+<h3>Restaurantes</h3>
+
+@if (error) {
+  <p>Se ha producido un error cargando los restaurantes</p>
+}
+
+@if (cargando) {
+  <p>Cargando restaurantes...</p>
+}
+
+@if (empty) {
+  <p>No hay ningun restaurante registrado</p>
+}
+
+@if (!cargando && !error) {
+  <div class="displayContainer">
+    @for (restaurante of restaurantes; track $index) {
+      <div class="userDisplay">
+        <p>ID: <span>{{restaurante.id}}</span></p>
+        <p>Nombre: <span>{{restaurante.nombre}}</span></p>
+        <p>Descipcion: <span>{{restaurante.description}}</span></p>
+        <p>Icon Urls:
+          @for (icon of restaurante.iconUrls; track $index) {
+            <p><span>- {{icon}}</span></p>
+          }
+        </p>
+        <p>Tags:
+          @for (tag of restaurante.tags; track $index) {
+            <p><span>- {{tag}}</span></p>
+          }
+        </p>
+        <p>Platos:
+          @for (plato of restaurante.platos; track $index) {
+            <p><span>- {{plato.id}}</span></p>
+          }
+        </p>
+        <p>Direcciones:
+          @for (direccion of restaurante.direcciones; track $index) {
+            <p><span>- {{direccion.id}}</span></p>
+          }
+        </p>
+        <p>Rating: <span>{{restaurante.rating}}</span></p>
+      </div>
+    }
+  </div>
+}

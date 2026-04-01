@@ -1,0 +1,151 @@
+.main_header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  background: #7a3fec; /* violeta */
+  box-shadow: none;
+  border: 0;
+  z-index: 1000;
+}
+
+.brand {
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.main_header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-style: italic;
+  background-color: #4a2c7d;
+  transition: background-color 250ms ease;
+  border: 1px solid #1a1a2e;
+  border-radius: 5px;
+  padding: 0.5vw;
+}
+
+.main_header h1:hover {
+  background-color: #a17eff;
+  cursor: pointer;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(60%, 420px);
+}
+
+.btn {
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.35rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  background: #b292ff; /* morado más claro */
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: #a17eff;
+}
+
+@media (max-width: 520px) {
+  .main_header {
+    padding: 0.75rem 0.9rem;
+  }
+
+  .main_header h1 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background: #1a1a2e;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #1a1a2e;
+  color: #f5f6fb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+main.main-layout {
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #121426;
+  color: #f2f4ff;
+}
+
+.welcome-card {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  max-width: 420px;
+}
+
+.welcome-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f9fbff;
+}
+
+.welcome-card p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #dbdeff;
+}
+
+
+.btn {
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.35rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  background: #b292ff; /* morado más claro */
+}
+
+.btn:hover {
+  background: #a17eff;
+}

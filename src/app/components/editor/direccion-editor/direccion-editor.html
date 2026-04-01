@@ -1,0 +1,50 @@
+<h3>Dirección</h3>
+
+@if (cargandoTodos) {
+	<p>Cargando ids de direcciones...</p>
+}
+
+@if (errorTodos) {
+	<p>Se ha producido un error cargando los Ids de las direcciones :(</p>
+}
+
+@if (!cargandoTodos && !errorTodos) {
+	<label for="direccionSelector">Selecciona el ID de la dirección: </label>
+	<select class="idSelector" name="direccionSelected" id="direccionSelected" [(ngModel)]="idSeleccionado" (change)="cargarDireccion()">
+		@for (id of direccionIds; track $index) {
+			<option value="{{id}}">{{id}}</option>
+		}
+	</select>
+
+	@if (cargandoDireccion) {
+		<p>Cargando dirección seleccionada...</p>
+	}
+
+	@if (errorDireccion) {
+		<p>Se ha producido un error cargando la dirección :(</p>
+	}
+
+	@if (direccionSeleccionada) {
+		<form class="editor">
+			<label for="poblacion">Población:</label>
+			<input name="poblacion" type="text" id="poblacion" [(ngModel)]="poblacion">
+
+			<label for="calle">Calle:</label>
+			<input name="calle" type="text" id="calle" [(ngModel)]="calle">
+
+			<label for="codigoPostal">Código Postal:</label>
+			<input name="codigoPostal" type="text" id="codigoPostal" [(ngModel)]="codigoPostal">
+
+			<label for="portal">Portal:</label>
+			<input name="portal" type="number" id="portal" [(ngModel)]="portal">
+
+			<label for="piso">Piso:</label>
+			<input name="piso" type="text" id="piso" [(ngModel)]="piso">
+
+			<div class="form-buttons">
+				<button type="button" title="Reiniciar los datos a los que tenia antes" (click)="cargarDatosDireccion()">Reiniciar</button>
+				<button type="button" title="Actualizar los datos" (click)="update()">Actualizar</button>
+			</div>
+		</form>
+	}
+}

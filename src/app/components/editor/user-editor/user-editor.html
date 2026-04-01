@@ -1,0 +1,48 @@
+<h3>Usuario</h3>
+
+@if (cargandoTodos) {
+  <p>Cargando ids de usuarios...</p>
+}
+
+@if (errorTodos) {
+  <p>Se ha producido un error cargando los Ids de los usuarios :(</p>
+}
+
+@if (!cargandoTodos && !errorTodos) {
+  <label for="userSelector">Selecciona el ID del usuario: </label>
+  <select class="idSelector" name="userSelected" id="userSelected" [(ngModel)]="selectedId" (change)="cargarUsuario()">
+    @for (userId of userIds; track $index) {
+      <option value="{{userId}}">{{userId}}</option>
+    }
+  </select>
+
+  @if (userSelected) {
+    <form class="editor">
+      <label for="nickname">Nickname:</label>
+      <input name="nickname" type="text" id="nickname" [(ngModel)]="nickname">
+      <label for="email">Email:</label>
+      <input name="email" type="email" id="email" [(ngModel)]="email">
+      <label for="iconUrl">Icon Url:</label>
+      <input type="text" name="iconUrl" id="iconUrl">
+      <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
+      @for (dir of direcciones; track $index) {
+        <p class="deletableElement">
+          - {{dir.id}} - {{dir.calle}} {{dir.portal}} {{dir.piso}} {{dir.poblacion}} {{dir.codigoPostal}}
+          <button class="remove-btn" title="Eliminar" (click)="eliminarDireccion(dir)">X</button>
+        </p>
+      }
+      <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
+      @for (plato of platos; track $index) {
+        <p class="deletableElement">
+          - {{plato.id}} - {{plato.nombre}}
+          <button class="remove-btn" title="Eliminar" (click)="eliminarPlato(plato)">X</button>
+        </p>
+      }
+      <div class="form-buttons">
+        <button type="submit" (click)="update()">Actualizar</button>
+        <button type="reset" (click)="cargarDatosDeUsuario()">Reiniciar</button>
+      </div>
+    </form>
+  }
+}
+

@@ -60,6 +60,9 @@
             },
             "development": {
               "buildTarget": "bomboplats-admin-panel:build:development"
+            },
+            "options": {
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

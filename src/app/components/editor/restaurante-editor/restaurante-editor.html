@@ -1,0 +1,51 @@
+<h3>Restaurante</h3>
+
+@if (cargandoTodos) {
+  <p>Cargando los restaurantes...</p>
+}
+
+@if (errorTodos) {
+  <p>No se han podido cargar los restaurantes :(</p>
+}
+
+@if (!cargandoTodos && !errorTodos) {
+  <label for="restSelector">Selecciona el restaurante: </label>
+  <select name="restSelector" id="restSelector" class="idSelector" (change)="cargarRestaurante()" [(ngModel)]="idSelected">
+    @for (restId of restaurantesId; track $index) {
+      <option value="{{restId}}">{{restId}}</option>
+    }
+  </select>
+}
+
+@if (restaurante) {
+  <form action="" class="editor">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" [(ngModel)]="nombre">
+    <label for="descripcion">Descripcion:</label>
+    <input type="text" name="descripcion" id="descripcion" [(ngModel)]="description">
+    <label for="tags">Tags:</label>
+    @for (tag of tags; track $index) {
+      <p class="deletableElement">- {{tag}} <button class="remove-btn" title="Eliminar" (click)="eliminarTag($index)">X</button></p>
+    }
+    <app-string-input placeholder="Introduce una tag:" (valorAñadido)="agregarTag($event)"></app-string-input>
+    <label for="iconUrls">Icon Urls:</label>
+    @for (iconUrl of iconUrls; track $index) {
+      <p class="deletableElement">- {{iconUrl}} <button class="remove-btn" title="Eliminar" (click)="eliminarIconUrl($index)">X</button></p>
+    }
+    <app-string-input placeholder="Introduce la URL:" (valorAñadido)="agregarIconUrl($event)"/>
+    <label for="platos">Platos:</label>
+    @for (plato of platos; track $index) {
+      <p class="deletableElement">- {{plato.id}} - {{plato.nombre}} <button class="remove-btn" title="Eliminar" (click)="eliminarPlato(plato)">X</button></p>
+    }
+    <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
+    <label for="direcciones">Direcciones:</label>
+    @for (dir of direcciones; track $index) {
+      <p class="deletableElement">- {{dir.id}} - {{dir.calle}} {{dir.portal}} {{dir.piso}} {{dir.poblacion}} {{dir.codigoPostal}} <button class="remove-btn" title="Eliminar" (click)="eliminarDireccion($index)">X</button></p>
+    }
+    <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
+    <div class="form-buttons">
+      <button type="submit" (click)="update()">Actualizar</button>
+      <button type="reset" (click)="cargarDatosRestaurante()">Reiniciar</button>
+    </div>
+  </form>
+}

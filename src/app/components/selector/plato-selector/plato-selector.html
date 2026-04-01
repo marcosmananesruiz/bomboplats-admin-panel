@@ -1,0 +1,18 @@
+@if (error) {
+  <p>No se han podido cargar los platos :(</p>
+}
+
+@if (cargando) {
+  <p>Cargando los platos...</p>
+}
+
+@if (!cargando && !error) {
+  <label>Selecciona un plato a añadir: </label>
+  <select name="platoSeleccionado" id="platoSeleccionado" [(ngModel)]="platoSeleccionado">
+    @for (plato of platos; track $index) {
+    <option [ngValue]="plato">{{plato.id}} - {{plato.nombre}}</option>
+    }
+  </select>
+  <button type="button" (click)="add()">{{actionText}}</button>
+}
+

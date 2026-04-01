@@ -1,0 +1,31 @@
+<h3>Direcciones</h3>
+
+@if (cargando) {
+  <p>Cargando Direcciones...</p>
+}
+
+@if (error) {
+  <p>Se ha producido un error con las direcciones</p>
+}
+
+@if (empty) {
+  <p>No hay ninguna direccion registrada</p>
+}
+
+
+@if (!cargando && !error) {
+  <div class="displayContainer">
+    @for (direccion of direcciones; track $index) {
+      <div class="userDisplay">
+        <p>ID: <span>{{direccion.id}}</span></p>
+        <p>Poblacion: <span>{{direccion.poblacion}}</span></p>
+        <p>Calle: <span>{{direccion.calle}}</span></p>
+        <p>Codigo Postal: <span>{{direccion.codigoPostal}}</span></p>
+        <p>Portal: <span>{{direccion.portal}}</span></p>
+        <p>Piso: <span>{{direccion.piso}}</span></p>
+      </div>
+    }
+  </div>
+}
+
+

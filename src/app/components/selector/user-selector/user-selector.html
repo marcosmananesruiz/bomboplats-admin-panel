@@ -1,0 +1,17 @@
+@if (error) {
+	<p>No se han podido cargar los usuarios :(</p>
+}
+
+@if (cargando) {
+	<p>Cargando los usuarios...</p>
+}
+
+@if (!cargando && !error) {
+	<label>Selecciona un usuario a añadir: </label>
+	<select name="userSeleccionado" id="userSeleccionado" [(ngModel)]="user">
+		@for (u of users; track $index) {
+			<option [ngValue]="u">{{u.id}} - {{u.nickname}}</option>
+		}
+	</select>
+	<button type="button" (click)="add()">{{actionText}}</button>
+}

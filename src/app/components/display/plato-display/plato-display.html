@@ -1,0 +1,37 @@
+<h3>Platos</h3>
+
+@if (error) {
+  <p>Se ha producido un error con los Platos</p>
+}
+
+@if (cargando) {
+  <p>Cargando Platos... </p>
+}
+
+@if (empty) {
+  <p>No hay platos registrados</p>
+}
+
+@if (!cargando && !error) {
+  <div class="platosContainer">
+    @for (plato of platos; track $index) {
+      <div class="userDisplay">
+        <p>ID: <span>{{plato.id}}</span></p>
+        <p>Nombre: <span>{{plato.nombre}}</span></p>
+        <p>Descripcion: <span>{{plato.description}}</span></p>
+        <p>Icon Url: <span>{{plato.iconUrl}}</span></p>
+        <p>Tags:
+          @for (tag of plato.tags; track $index) {
+            <p><span>- {{tag}}</span></p>
+          }
+        </p>
+        <p>Modificaciones Posibles:
+          @for (modificacion of plato.possibleModifications; track $index) {
+            <p><span>- {{modificacion}}</span></p>
+          }
+        </p>
+        <p>Precio: <span>{{plato.precio}}€</span></p>
+      </div>
+    }
+  </div>
+}

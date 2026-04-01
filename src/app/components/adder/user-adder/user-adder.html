@@ -1,0 +1,14 @@
+<h3>Usuarios</h3>
+
+<form class="adder">
+  <label for="nickname">Nickname:</label>
+  <input name="nickname" type="text" id="nickname" [(ngModel)]="nickname">
+  <label for="email">Email:</label>
+  <input name="email" type="email" id="email" [(ngModel)]="email">
+  <label for="password">Contraseña:</label>
+  <input name="password" id="password" type="password" [(ngModel)]="password">
+  <div class="form-buttons">
+    <button type="submit" (click)="registerUser();">Guardar</button>
+    <button type="reset">Eliminar</button>
+  </div>
+</form>

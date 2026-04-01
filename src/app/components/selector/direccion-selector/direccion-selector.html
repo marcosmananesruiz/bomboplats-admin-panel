@@ -1,0 +1,18 @@
+@if (error) {
+  <p>No se han podido cargar las direcciones :(</p>
+}
+
+@if (cargando) {
+  <p>Cargando las direcciones...</p>
+}
+@if (!cargando && !error) {
+  <label>Selecciona una direccion a añadir: </label>
+  <select name="platoSeleccionado" id="platoSeleccionado" [(ngModel)]="direccionSeleccionada">
+    @for (dir of direcciones; track $index) {
+      <option [ngValue]="dir">{{dir.id}} - {{dir.calle}} {{dir.portal}} {{dir.piso}} {{dir.poblacion}} {{dir.codigoPostal}}</option>
+    }
+  </select>
+  <button type="button" (click)="add()">{{actionText}}</button>
+}
+
+

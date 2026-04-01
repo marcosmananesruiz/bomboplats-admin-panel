@@ -1,0 +1,31 @@
+<h3>Restaurante</h3>
+
+<form class="adder">
+  <label for="nombre">Nombre:</label>
+  <input type="text" name="nombre" id="nombre" [(ngModel)]="nombre">
+  <label for="descripcion">Descripcion:</label>
+  <textarea name="descripcion" id="descripcion" [(ngModel)]="descipcion"></textarea>
+  <label for="tags">Tags:</label>
+  @for (tag of tags; track $index) {
+    <p class="deletableElement">- {{tag}} <button title="Eliminar" (click)="eliminarTag($index)">X</button></p>
+  }
+  <app-string-input (valorAñadido)="agregarTag($event)" placeholder="Escribe las tags del restaurante"></app-string-input>
+  <label for="iconUrls">Icon Urls:</label>
+  <app-string-input (valorAñadido)="agregarIconUrl($event)" placeholder="Introduce las Urls:"></app-string-input>
+  <label for="rating">Rating:</label>
+  <input type="number" name="rating" id="rating" max="10" min="0" step="1" [(ngModel)]="rating">
+  <label for="platos">Platos:</label>
+  <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
+  @for (plato of platos; track $index) {
+    <p class="deletableElement">- {{plato.id}} > {{plato.nombre}} <button title="Eliminar" (click)="eliminiarPlato(plato)">X</button></p>
+  }
+  <label for="direcciones">Direcciones</label>
+  <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
+  @for (dir of direcciones; track $index) {
+    <p class="deletableElement">- {{dir.id}} > {{dir.calle}} {{dir.portal}} {{dir.piso}} {{dir.poblacion}} {{dir.codigoPostal}} <button title="Eliminar" (click)="eliminarDireccion($index)">X</button></p>
+  }
+  <div class="form-buttons">
+    <button type="submit" (click)="registerRestaurante()">Guardar</button>
+    <button type="reset">Eliminar</button>
+  </div>
+</form>
