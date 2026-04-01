@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { BASE_PATH, Configuration } from './api';
 import { provideHttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.development';
 
 class JsonConfiguration extends Configuration {
   override selectHeaderAccept(accepts: string[]): string | undefined {
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     {
       provide: Configuration,
-      useValue: new JsonConfiguration({ basePath: 'http://localhost:8080' })
+      useValue: new JsonConfiguration({ basePath: environment.apiUrl })
     }
   ]
 };

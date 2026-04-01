@@ -2,57 +2,23 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
 
-## Development server
+## Como ejecutarlo
 
-To start a local development server, run:
+Teneis que tener Angular instalado para ejecutar la aplicacion, y [Node.js](https://nodejs.org/es/download) para instalar Angular.
+Este proyecto se ha creado con la version 21.2.3 del Angular CLI, recomendable tener la misma
+Una vez este instalado, os clonais este repositorio en local y como dice abajo, ejecutais 'ng serve' para ejecutar en modo developer.
 
-```bash
-ng serve
-```
+**IMPORTANTE** para ejecutarlo en modo developer tienes que tener tambien el proyecto de SpringBoot en ejecucion, ya que todas las peticiones las busca en localhost:8080. (Si por alguna razon quieres cambiarlo, en enviroments/enviroment.delevopment.ts esta la direccion, cambiala segun a lo que necesites).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Si quieres ejecutarlo accediendo directamente al servidor de produccion (cuando lo tengamos xd) entonces ejecuta 'ng build' y ahi mirará la direccion en enviroments/enviroment.ts (aunque actualmente apunta a un sitio que no existe lol)
 
-## Code scaffolding
+Una vez ejectuada, la aplicacion se abrira en [localhost:4200](http://localhost:4200/)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+La finalidad de esto es tener una forma facil de probar los endpoints junto a visualizar, añadir y editar los datos. Mejor esto que Swagger o abrir una conexcion con la BBDD.
 
-```bash
-ng generate component component-name
-```
+Siempre que la aplicacion diga que ha habido un error, se mostrara en la consola del navegador, si no sabeis que pasa pasen captura.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Que os cunda
 
 ## Additional Resources
 
