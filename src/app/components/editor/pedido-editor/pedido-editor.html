@@ -52,8 +52,9 @@
       }
       <app-string-input placeholder="Escriba aqui la modificacion: (Ex: Extra Bacon...)" (valorAñadido)="agregarModificacion($event)"></app-string-input>
       <div class="form-buttons">
-        <button type="submit" (click)="update()">Actualizar</button>
-        <button type="reset" (click)="cargarDatosPedido()">Reiniciar</button>
+        <button type="reset"  title="Reiniciar los datos del formulario a los que hay guardados actualmente" (click)="cargarDatosPedido()">Reiniciar</button>
+        <button type="submit" title="Actualizar los datos del pedido" (click)="update()">Actualizar</button>
+        <button type="button" title="Eliminar este pedido" (click)="delete()">Eliminar</button>
       </div>
     </form>
   }

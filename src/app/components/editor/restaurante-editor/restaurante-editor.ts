@@ -142,4 +142,36 @@ export class RestauranteEditor implements OnInit {
   eliminarDireccion(index: number) {
     this.direcciones.splice(index, 1)
   }
+
+  delete() {
+    const borrar = confirm("¿Estas seguro de querer borrar este restaurante? (¡Se eliminaran todos los PLATOS y DIRECCIONES asociados a el!)")
+
+    if (borrar) {
+      if (this.restaurante && this.restaurante.id) {
+        this.restauranteService.deleteRestaurante(this.restaurante.id).subscribe({
+          next: (data) => {
+            if (data) {
+              alert("Se ha borrado exitosamente el restaurante")
+              this.clearFromList(this.restaurante?.id || "")
+              this.restaurante = null;
+              this.cdr.detectChanges();
+            } else {
+              alert("No se ha podido borrar el restaurante")
+            }
+          },
+          error: (err) => {
+            console.error(err);
+            alert("Se ha producido un error borrando el restaurante")
+          }
+        })
+      }
+    }
+  }
+
+  clearFromList(restauranteId: string) {
+    const index = this.restaurantesId.indexOf(this.restaurantesId.find(r => r === restauranteId || ""))
+    if (index !== -1) {
+      this.restaurantesId.splice(index, 1)
+    }
+  }
 }

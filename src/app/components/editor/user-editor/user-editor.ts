@@ -3,6 +3,7 @@ import { Direccion, Plato, User, UserControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
+import { consumerAfterComputation } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-user-editor',
@@ -14,7 +15,7 @@ export class UserEditor implements OnInit {
 
   userIds: string[] = [];
   selectedId: string = "";
-  userSelected: User | null = null;
+  user: User | null = null;
 
   nickname: string = "";
   email: string = "";
@@ -53,7 +54,7 @@ export class UserEditor implements OnInit {
     this.cargandoUsuario = true;
     this.userService.getByID(this.selectedId).subscribe({
       next: (data) => {
-        this.userSelected = data;
+        this.user = data;
         this.cargandoUsuario = false;
         this.cargarDatosDeUsuario();
         this.cdr.detectChanges();
@@ -69,16 +70,16 @@ export class UserEditor implements OnInit {
   }
 
   cargarDatosDeUsuario(): void {
-    this.nickname = this.userSelected?.nickname || "";
-    this.email = this.userSelected?.email || "";
-    this.iconUrl = this.userSelected?.iconUrl || "";
-    this.direcciones = new Set(this.userSelected?.direcciones || [])
-    this.platos = new Set(this.userSelected?.platosFavoritos || [])
+    this.nickname = this.user?.nickname || "";
+    this.email = this.user?.email || "";
+    this.iconUrl = this.user?.iconUrl || "";
+    this.direcciones = new Set(this.user?.direcciones || [])
+    this.platos = new Set(this.user?.platosFavoritos || [])
   }
 
   update(): void {
     this.userService.updateUser({
-      id: this.userSelected?.id,
+      id: this.user?.id,
       nickname: this.nickname,
       email: this.email,
       iconUrl: this.iconUrl,
@@ -126,5 +127,37 @@ export class UserEditor implements OnInit {
 
   eliminarPlato(plato: Plato): void {
     this.platos.delete(plato);
+  }
+
+  delete() {
+    const borrar = confirm("¿Estas seguro de querer borrar este usuario?")
+
+    if (borrar) {
+      if (this.user && this.user.id) {
+        this.userService.deleteByID(this.user.id).subscribe({
+          next: (data) => {
+            if (data) {
+              alert("Se ha borrado exitosamente el usuario")
+              this.clearFromList(this.user?.id || "");
+              this.user = null;
+              this.cdr.detectChanges();
+            } else {
+              alert("No se ha podido borrar el usuario")
+            }
+          },
+          error: (err) => {
+            console.error(err)
+            alert("Se ha producido un error borrando el usuario")
+          }
+        })
+      }
+    }
+  }
+
+  clearFromList(userId: string) {
+    const index = this.userIds.indexOf(this.userIds.find(u => u === userId) || "");
+    if (index !== -1) {
+      this.userIds.splice(index, 1)
+    }
   }
 }

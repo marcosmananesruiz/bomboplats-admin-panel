@@ -47,8 +47,9 @@
       <label for="precio">Precio</label>
       <input type="number" name="precio" id="precio" required [(ngModel)]="precio">
       <div class="form-buttons">
-        <button type="submit" (click)="update();">Guardar</button>
-        <button type="reset">Eliminar</button>
+        <button type="reset" title="Reiniciar los datos del formularios a los originales" (click)="cargarDatosPlato()">Reiniciar</button>
+        <button type="submit" title="Actualizar los datos del plato" (click)="update();">Actualizar</button>
+        <button type="button" title="Eliminar este plato" (click)="delete();">Eliminar</button>
       </div>
     </form>
   }

@@ -24,7 +24,7 @@
 		<p>Se ha producido un error cargando la dirección :(</p>
 	}
 
-	@if (direccionSeleccionada) {
+	@if (direccion) {
 		<form class="editor">
 			<label for="poblacion">Población:</label>
 			<input name="poblacion" type="text" id="poblacion" [(ngModel)]="poblacion">
@@ -43,7 +43,8 @@
 
 			<div class="form-buttons">
 				<button type="button" title="Reiniciar los datos a los que tenia antes" (click)="cargarDatosDireccion()">Reiniciar</button>
-				<button type="button" title="Actualizar los datos" (click)="update()">Actualizar</button>
+				<button type="button" title="Actualizar los datos de la dirección" (click)="update()">Actualizar</button>
+        <button type="button" title="Eliminar esta direccion" (click)="delete()">Eliminar</button>
 			</div>
 		</form>
 	}

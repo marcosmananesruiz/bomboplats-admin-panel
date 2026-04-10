@@ -16,7 +16,7 @@
     }
   </select>
 
-  @if (userSelected) {
+  @if (user) {
     <form class="editor">
       <label for="nickname">Nickname:</label>
       <input name="nickname" type="text" id="nickname" [(ngModel)]="nickname">
@@ -39,8 +39,9 @@
         </p>
       }
       <div class="form-buttons">
-        <button type="submit" (click)="update()">Actualizar</button>
-        <button type="reset" (click)="cargarDatosDeUsuario()">Reiniciar</button>
+        <button type="reset" title="Reiniciar los datos del formulario a los orginales" (click)="cargarDatosDeUsuario()">Reiniciar</button>
+        <button type="submit" title="Actualizar los datos del usuario" (click)="update()">Actualizar</button>
+        <button type="button" title="Eliminar el usuario" (click)="delete();">Eliminar</button>
       </div>
     </form>
   }

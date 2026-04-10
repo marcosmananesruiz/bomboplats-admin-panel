@@ -13,7 +13,7 @@ export class DireccionEditor implements OnInit {
 
   direccionIds: string[] = [];
   idSeleccionado: string = "";
-  direccionSeleccionada: Direccion | null = null;
+  direccion: Direccion | null = null;
 
   poblacion: string = "";
   calle: string = "";
@@ -54,7 +54,7 @@ export class DireccionEditor implements OnInit {
     this.cargandoDireccion = true;
     this.direccionService.getDireccionById(this.idSeleccionado).subscribe({
       next: (data) => {
-        this.direccionSeleccionada = data;
+        this.direccion = data;
         this.cargandoDireccion = false;
         this.cargarDatosDireccion();
         this.cdr.detectChanges();
@@ -69,16 +69,16 @@ export class DireccionEditor implements OnInit {
   }
 
   cargarDatosDireccion(): void  {
-    this.poblacion = this.direccionSeleccionada?.poblacion || "";
-    this.calle = this.direccionSeleccionada?.calle || "";
-    this.codigoPostal = this.direccionSeleccionada?.codigoPostal || "";
-    this.portal = this.direccionSeleccionada?.portal || 0;
-    this.piso = this.direccionSeleccionada?.piso || "";
+    this.poblacion = this.direccion?.poblacion || "";
+    this.calle = this.direccion?.calle || "";
+    this.codigoPostal = this.direccion?.codigoPostal || "";
+    this.portal = this.direccion?.portal || 0;
+    this.piso = this.direccion?.piso || "";
   }
 
   update(): void {
     this.direccionService.updateDireccion({
-      id: this.direccionSeleccionada?.id,
+      id: this.direccion?.id,
       poblacion: this.poblacion,
       calle: this.calle,
       codigoPostal: this.codigoPostal,
@@ -97,5 +97,40 @@ export class DireccionEditor implements OnInit {
         alert("Se ha producido un error actualizando los datos de la direccion")
       }
     })
+  }
+
+  delete() {
+    const borrar = confirm("¿Estas seguro de querer borrar esta direccion?")
+
+    if (borrar) {
+      if (this.direccion && this.direccion.id) {
+        const id = this.direccion.id;
+        this.direccionService.deleteById(id).subscribe(
+          {
+            next: (data) => {
+              if (data) {
+                alert("Se ha borrado la direccion exitosamente")
+                this.clearFromList(this.direccion?.id || "")
+                this.direccion = null;
+                this.cdr.detectChanges();
+              } else {
+                alert("No se ha podido borrar la direccion")
+              }
+            },
+            error: (err) => {
+              console.error(err)
+              alert("Se ha producido un error borrando la direccion")
+            }
+          }
+        )
+      }
+    }
+  }
+
+  clearFromList(direccionId: string) {
+    const index = this.direccionIds.indexOf(this.direccionIds.find(d => d === direccionId) || "")
+    if (index !== -1) {
+      this.direccionIds.splice(index, 1)
+    }
   }
 }

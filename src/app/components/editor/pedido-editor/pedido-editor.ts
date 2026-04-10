@@ -119,4 +119,36 @@ export class PedidoEditor implements OnInit {
     this.modificaciones.splice(index, 1)
     this.cdr.detectChanges()
   }
+
+  delete() {
+    const borrar = confirm("¿Estas seguro de querer borrar este pedido?")
+
+    if (borrar) {
+      if (this.pedido && this.pedido.id) {
+        this.pedidoService.deletePedido(this.pedido.id).subscribe({
+          next: (data) => {
+            if (data) {
+              alert("Se ha borrado el pedido exitosamente")
+              this.clearFromList(this.pedido?.id || "")
+              this.pedido = null;
+              this.cdr.detectChanges();
+            } else {
+              alert("No se ha podido borrar el pedido")
+            }
+          },
+          error: (err) => {
+            console.error(err)
+            alert("Se ha producido un error borrando el pedido")
+          }
+        })
+      }
+    }
+  }
+
+  clearFromList(pedidoId: string) {
+    const index = this.idsPedido.indexOf(this.idsPedido.find(p => p === pedidoId) || "")
+    if (index !== -1) {
+      this.idsPedido.splice(index, 1)
+    }
+  }
 }

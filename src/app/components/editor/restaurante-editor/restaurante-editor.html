@@ -44,8 +44,9 @@
     }
     <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
     <div class="form-buttons">
-      <button type="submit" (click)="update()">Actualizar</button>
-      <button type="reset" (click)="cargarDatosRestaurante()">Reiniciar</button>
+      <button type="reset" title="Reiniciar los datos del formulario a los originales" (click)="cargarDatosRestaurante()">Reiniciar</button>
+      <button type="submit" title="Actualizar los datos del Restaurante" (click)="update()">Actualizar</button>
+      <button type="button" title="Eliminar el Restaurante" (click)="delete();">Eliminar</button>
     </div>
   </form>
 }

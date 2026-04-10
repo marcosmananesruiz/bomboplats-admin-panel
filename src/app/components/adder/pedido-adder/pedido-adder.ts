@@ -31,7 +31,6 @@ export class PedidoAdder {
       modifications: this.modificaciones,
       entrega: this.entrega + ':00.000Z'
     }
-    console.log(body)
     this.pedidoService.register2(body).subscribe({
       error: (err) => {
         console.error(err)
@@ -58,5 +57,4 @@ export class PedidoAdder {
   eliminarModificacion(index: number) {
     this.modificaciones.splice(index, 1)
   }
-
 }

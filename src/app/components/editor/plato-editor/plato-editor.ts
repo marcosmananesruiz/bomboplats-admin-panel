@@ -122,4 +122,36 @@ export class PlatoEditor implements OnInit {
   eliminarTag(index: number) {
     this.tags.splice(index, 1)
   }
+
+  delete() {
+    const borrar = confirm("¿Estas seguro de querer borrar este plato? (¡Se borrarán tambien todos los pedidos asociados a el!)")
+
+    if (borrar) {
+      if (this.plato && this.plato.id) {
+        this.platoService.deletePlato(this.plato.id).subscribe({
+          next: (data) => {
+            if (data) {
+              alert("Se ha borrado exitosamente el plato")
+              this.clearFromList(this.plato?.id || "")
+              this.plato = null;
+              this.cdr.detectChanges();
+            } else {
+              alert("No se ha podido borrar el plato")
+            }
+          },
+          error: (err) => {
+            console.error(err)
+            alert("Se ha producido un error borrando el plato")
+          }
+        })
+      }
+    }
+  }
+
+  clearFromList(platoId: string) {
+    const index = this.platoIds.indexOf(this.platoIds.find(p => p === platoId || ""))
+    if (index !== -1) {
+      this.platoIds.splice(index, 1)
+    }
+  }
 }
