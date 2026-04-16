@@ -15,10 +15,6 @@
   <label for="rating">Rating:</label>
   <input type="number" name="rating" id="rating" max="10" min="0" step="1" [(ngModel)]="rating">
   <label for="platos">Platos:</label>
-  <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
-  @for (plato of platos; track $index) {
-    <p class="deletableElement">- {{plato.id}} > {{plato.nombre}} <button title="Eliminar" (click)="eliminiarPlato(plato)">X</button></p>
-  }
   <label for="direcciones">Direcciones</label>
   <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
   @for (dir of direcciones; track $index) {

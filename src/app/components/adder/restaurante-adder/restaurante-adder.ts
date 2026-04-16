@@ -7,7 +7,7 @@ import { StringInput } from "../../util/string-input/string-input";
 
 @Component({
   selector: 'app-restaurante-adder',
-  imports: [PlatoSelector, DireccionSelector, FormsModule, StringInput],
+  imports: [DireccionSelector, FormsModule, StringInput],
   templateUrl: './restaurante-adder.html',
   styleUrl: '../adders-style.css',
 })
@@ -18,21 +18,13 @@ export class RestauranteAdder {
   tags: string[] = [];
   iconUrls: string[] = [];
   rating: number = 0;
-  platos: Set<Plato> = new Set<Plato>;
+  platos: Set<Plato> = new Set();
   direcciones: Direccion[] = [];
 
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService
   ) { }
 
-  agregarPlato(plato: Plato): void {
-    const yaExiste = [...this.platos].some(p => p.id === plato.id)
-    if (!yaExiste) {
-      this.platos.add(plato)
-    } else {
-      alert("Ese plato ya esta añadido al restaurante")
-    }
-  }
 
   agregarDireccion(direccion: Direccion): void {
     if (!this.direcciones.find(d => d.id === direccion.id)) {
@@ -40,10 +32,6 @@ export class RestauranteAdder {
     } else {
       alert("Esa direccion ya esta añadida al restaurante")
     }
-  }
-
-  eliminiarPlato(plato: Plato) {
-    this.platos.delete(plato)
   }
 
   eliminarDireccion(index: number) {
@@ -73,7 +61,7 @@ export class RestauranteAdder {
       tags: this.tags,
       iconUrls: this.iconUrls,
       rating: this.rating,
-      platos: [...this.platos] as unknown as Set<Direccion>,
+      platos: [...this.platos] as unknown as Set<Plato>,
       direcciones: this.direcciones
     }).subscribe({
       next: (data) => {},
