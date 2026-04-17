@@ -3,15 +3,18 @@ import { Direccion, Plato, User, UserControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
-import { consumerAfterComputation } from '@angular/core/primitives/signals';
+import { S3Service, URLType } from '../../../service/s3-service';
+import { ImageInput } from "../../util/image-input/image-input";
 
 @Component({
   selector: 'app-user-editor',
-  imports: [FormsModule, DireccionSelector, PlatoSelector],
+  imports: [FormsModule, DireccionSelector, PlatoSelector, ImageInput],
   templateUrl: './user-editor.html',
   styleUrl: '../editor-style.css',
 })
 export class UserEditor implements OnInit {
+
+
 
   userIds: string[] = [];
   selectedId: string = "";
@@ -23,6 +26,8 @@ export class UserEditor implements OnInit {
   direcciones: Set<Direccion> = new Set();
   platos: Set<Plato> = new Set();
 
+  chachedIcon? : File
+
   cargandoTodos: boolean = true;
   errorTodos: boolean = false;
 
@@ -31,6 +36,7 @@ export class UserEditor implements OnInit {
 
   constructor(
     @Inject(UserControllerService) private userService: UserControllerService,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -78,6 +84,19 @@ export class UserEditor implements OnInit {
   }
 
   update(): void {
+
+    if (this.chachedIcon && this.user && this.user.id) {
+      this.userService.createImageUrl(this.user.id).subscribe({
+        next: (presignedUrl) =>  {
+          if (this.user && this.user.id) {
+            const iconUrl = this.url(this.user.id||"")
+            if (this.chachedIcon) this.s3Service.saveImage(presignedUrl, this.chachedIcon)
+            this.iconUrl = iconUrl;
+          }
+        }
+      })
+    }
+
     this.userService.updateUser({
       id: this.user?.id,
       nickname: this.nickname,
@@ -158,6 +177,38 @@ export class UserEditor implements OnInit {
     const index = this.userIds.indexOf(this.userIds.find(u => u === userId) || "");
     if (index !== -1) {
       this.userIds.splice(index, 1)
+    }
+  }
+
+  resetProfilePic() {
+    this.iconUrl = this.s3Service.DEAFULT_USER_PROFILE_PIC
+    this.clearCachePic()
+  }
+
+  cacheProfilePic(image: File) {
+    this.chachedIcon = image;
+  }
+
+  clearCachePic() {
+    this.chachedIcon = undefined;
+  }
+
+  url(id: string) {
+    return this.s3Service.url(URLType.USER, id)
+  }
+
+  downloadProfilePic() { // No funciona por CORS lol
+    if (this.user && this.user.id)
+      this.s3Service.downloadImage(this.iconUrl, this.user.id + ".jpg")
+  }
+
+  showProfilePic() {
+    window.open(this.s3Service.getFullImageUrl(this.iconUrl), "_blank")
+  }
+
+  showCachedPic() {
+    if (this.chachedIcon) {
+      window.open(URL.createObjectURL(this.chachedIcon), "_blank")
     }
   }
 }

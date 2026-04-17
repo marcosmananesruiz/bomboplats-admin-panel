@@ -118,6 +118,10 @@
   cursor: pointer;
 }
 
+.deletableElement span {
+  font-weight: bold;
+}
+
 
 .idSelector {
   padding: 0rem;
