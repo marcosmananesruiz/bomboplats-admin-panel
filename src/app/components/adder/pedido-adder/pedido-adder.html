@@ -19,8 +19,7 @@
     @for (modif of modificaciones; track $index) {
       <p class="deletableElement">- {{modif}} <button title="Eliminar" (click)="eliminarModificacion($index)">X</button></p>
     }
-  <app-string-input placeholder="Escriba aqui la modificacion: (Ex: Extra Bacon...)"
-    (valorAñadido)="agregarModificacion($event)"></app-string-input>
+  <app-list-selector [lista]="plato.possibleModifications" (itemSelected)="agregarModificacion($event)"></app-list-selector>
   <div class="form-buttons">
     <button type="submit" (click)="registerPedido()">Guardar</button>
     <button type="reset">Eliminar</button>

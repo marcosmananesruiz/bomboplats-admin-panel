@@ -3,6 +3,7 @@
   <p>Cargando los datos...</p>
 } @else {
   <form action="" class="adder">
+
     <label for="restaurante">Restaurante del Plato:</label>
     <select name="restaurante" id="restaurante" [(ngModel)]="restauranteId">
       @if (errorRestaurantes) {
@@ -13,24 +14,34 @@
         }
       }
     </select>
+
     <label for="nombre">Nombre:</label>
     <input type="text" name="nombre" id="nombre" [(ngModel)]="nombre" required>
+
     <label for="descripcion">Descripcion:</label>
     <input type="text" name="descripcion" id="descripcion" [(ngModel)]="descripcion" required>
-    <label for="iconUrl">Icon Url:</label>
-    <input type="text" name="iconUrl" id="iconUrl" [(ngModel)]="iconUrl">
+
+    <label for="iconUrl">Icon:</label>
+    <app-image-input (onImageSelected)="cambiarIcono($event)"></app-image-input>
+    @if (icon) {
+      <p class="deletableElement">- {{icon.name}} <button title="Eliminar" (click)="reiniciarIcono()">X</button></p>
+    }
+
     <label for="tags">Tags:</label>
     @for (tag of tags; track $index) {
       <p class="deletableElement">- {{tag}} <button title="Eliminar" (click)="eliminarTag($index)">X</button></p>
     }
     <app-string-input placeholder="Introduce la tag:" (valorAñadido)="agregarTag($event)"></app-string-input>
+
     <label for="possibleModifications">Modificaciones Posibles:</label>
     @for (modif of possibleModifications; track $index) {
       <p class="deletableElement">- {{modif}} <button title="Eliminar" (click)="eliminarModificacion($index)">X</button></p>
     }
     <app-string-input placeholder="Introduce la modificacion" (valorAñadido)="agregarModificacion($event)"></app-string-input>
+
     <label for="precio">Precio</label>
     <input type="number" name="precio" id="precio" required [(ngModel)]="precio">
+
     <div class="form-buttons">
       <button type="submit" (click)="registerPlato();">Guardar</button>
       <button type="reset">Eliminar</button>

@@ -1,0 +1,23 @@
+.welcome-card {
+  margin-top: 30vh;
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  max-width: 420px;
+}
+
+.welcome-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f9fbff;
+}
+
+.welcome-card p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #dbdeff;
+}

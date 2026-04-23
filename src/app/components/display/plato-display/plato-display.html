@@ -19,7 +19,7 @@
         <p>ID: <span>{{plato.id}}</span></p>
         <p>Nombre: <span>{{plato.nombre}}</span></p>
         <p>Descripcion: <span>{{plato.description}}</span></p>
-        <p>Icon Url: <span>{{plato.iconUrl}}</span></p>
+        <p>Icono: @if (plato.iconUrl) { <button title="Mostrar Imagen" (click)="showIcon(plato.iconUrl)">Ver 🔍</button> } @else { <span>-</span> } </p>
         <p>Tags:
           @for (tag of plato.tags; track $index) {
             <p><span>- {{tag}}</span></p>
@@ -27,10 +27,10 @@
         </p>
         <p>Modificaciones Posibles:
           @for (modificacion of plato.possibleModifications; track $index) {
-            <p><span>- {{modificacion}}</span></p>
+            <p><span>- {{ modificacion }}</span></p>
           }
         </p>
-        <p>Precio: <span>{{plato.precio}}€</span></p>
+        <p>Precio: <span>{{ plato.precio }}€</span></p>
       </div>
     }
   </div>

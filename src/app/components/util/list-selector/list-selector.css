@@ -1,0 +1,52 @@
+:host {
+	display: block;
+}
+
+div {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+select {
+	flex: 1;
+	padding: 0.5rem;
+	border: 1px solid #6b4a9f;
+	border-radius: 0.25rem;
+	background-color: #6b4a9f;
+	color: #ffffff;
+	font-weight: 400;
+}
+
+select:focus {
+	outline: none;
+	border-color: #7744ff;
+	background-color: #5a3a8f;
+}
+
+option {
+	background-color: #4a2c7d;
+	color: #ffffff;
+}
+
+button {
+	padding: 0.45rem 0.9rem;
+	border: 1px solid #7744ff;
+	border-radius: 0.25rem;
+	background-color: #7744ff;
+	color: #ffffff;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.18s ease;
+}
+
+button:hover {
+	background-color: #8855ff;
+	border-color: #8855ff;
+}
+
+button:active {
+	background-color: #6633ee;
+	border-color: #6633ee;
+	transform: translateY(1px);
+}

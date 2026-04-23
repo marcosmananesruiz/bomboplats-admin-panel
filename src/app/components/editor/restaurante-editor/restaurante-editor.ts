@@ -4,16 +4,18 @@ import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
+import { S3Service, URLType } from '../../../service/s3-service';
+import { ImageInput } from "../../util/image-input/image-input";
 
 @Component({
   selector: 'app-restaurante-editor',
-  imports: [FormsModule, StringInput, PlatoSelector, DireccionSelector],
+  imports: [FormsModule, StringInput, PlatoSelector, DireccionSelector, ImageInput],
   templateUrl: './restaurante-editor.html',
   styleUrl: '../editor-style.css',
 })
 export class RestauranteEditor implements OnInit {
 
-  restaurante: Restaurante | null = null;
+  restaurante?: Restaurante;
   restaurantesId: (string | undefined)[] = [];
   idSelected: string = "";
 
@@ -31,8 +33,11 @@ export class RestauranteEditor implements OnInit {
   cargandoRestaurante: boolean = false;
   errorRestaurante: boolean = false;
 
+  cachedImages : File[] = []
+
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -86,6 +91,9 @@ export class RestauranteEditor implements OnInit {
   }
 
   update(): void {
+
+    this.guardarFotos();
+    
     this.restauranteService.updateRestaurante({
       id: this.restaurante?.id,
       nombre: this.nombre,
@@ -119,12 +127,16 @@ export class RestauranteEditor implements OnInit {
     this.tags.splice(index, 1)
   }
 
-  agregarIconUrl(iconUrl: string) {
-    this.iconUrls.push(iconUrl)
+  agregarIcono(image: File) {
+    this.cachedImages.push(image)
   }
 
   eliminarIconUrl(index: number) {
-    this.iconUrls.splice(index, 1)
+    if ((this.iconUrls.length - 1) <= 0) {
+      alert("El Restaurante tiene que tener al menos una foto!")
+    } else {
+      this.iconUrls.splice(index, 1)
+    }
   }
 
   agregarPlato(plato: Plato) {
@@ -153,7 +165,7 @@ export class RestauranteEditor implements OnInit {
             if (data) {
               alert("Se ha borrado exitosamente el restaurante")
               this.clearFromList(this.restaurante?.id || "")
-              this.restaurante = null;
+              this.restaurante = undefined;
               this.cdr.detectChanges();
             } else {
               alert("No se ha podido borrar el restaurante")
@@ -172,6 +184,32 @@ export class RestauranteEditor implements OnInit {
     const index = this.restaurantesId.indexOf(this.restaurantesId.find(r => r === restauranteId || ""))
     if (index !== -1) {
       this.restaurantesId.splice(index, 1)
+    }
+  }
+
+  showProfilePic(iconUrl: string) {
+    window.open(this.s3Service.getFullImageUrl(iconUrl), "_blank")
+  }
+
+  guardarFotos() {
+    if (this.cachedImages && this.restaurante && this.restaurante.id) {
+
+      const id = this.restaurante.id;
+      const iconsNumbe = this.iconUrls.length;
+
+      for (let i = 0; i < this.cachedImages.length; i++) {
+
+        const index = iconsNumbe + i;
+        const iconUrl = this.s3Service.url(URLType.REST, id, index)
+
+        this.restauranteService.getRestauranteIconUploadUrl(id, index).subscribe({
+          next: (presignedUrl) => {
+            const foto = this.cachedImages.at(i)
+            this.s3Service.saveImage(presignedUrl, foto!)
+            this.restaurante?.iconUrls?.push(iconUrl)
+          }
+        })
+      }
     }
   }
 }

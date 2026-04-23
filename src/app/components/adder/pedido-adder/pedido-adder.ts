@@ -4,10 +4,11 @@ import { FormsModule } from "@angular/forms";
 import { UserSelector } from "../../selector/user-selector/user-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { StringInput } from "../../util/string-input/string-input";
+import { ListSelector } from "../../util/list-selector/list-selector";
 
 @Component({
   selector: 'app-pedido-adder',
-  imports: [FormsModule, UserSelector, PlatoSelector, StringInput],
+  imports: [FormsModule, UserSelector, PlatoSelector, StringInput, ListSelector],
   templateUrl: './pedido-adder.html',
   styleUrl: '../adders-style.css',
 })
@@ -48,10 +49,15 @@ export class PedidoAdder {
 
   establecerPlato(plato: Plato) {
     this.plato = plato;
+    this.modificaciones = []
   }
 
   agregarModificacion(modif: string) {
-    this.modificaciones.push(modif)
+    if (this.modificaciones.find(m => m === modif)) {
+      alert("Esa modificacion ya esta añadida")
+    } else {
+      this.modificaciones.push(modif)
+    }
   }
 
   eliminarModificacion(index: number) {

@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://mi-servidor-produccion.com' // Aqui pondremos la direccion de AWS que aun no esta
+  apiUrl: 'http://bomboplats.run.place:8080',
+  s3bucket: 'https://bomboplats-imagestorage.s3.us-east-1.amazonaws.com/',
 };

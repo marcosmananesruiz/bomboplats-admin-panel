@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './element-display.css',
 })
 export class ElementDisplay {
-  cargando: boolean = true;
-  error: boolean = false;
-  empty: boolean = false;
+  protected cargando: boolean = true;
+  protected error: boolean = false;
+  protected empty: boolean = false;
 }
 
 

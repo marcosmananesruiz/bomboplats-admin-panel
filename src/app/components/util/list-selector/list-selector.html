@@ -1,0 +1,9 @@
+<div>
+  <select [(ngModel)]="selected">
+    @for (s of lista; track $index) {
+      <option value="{{s}}">{{s}}</option>
+    }
+  </select>
+  <button type="button" (click)="add()">+ Añadir</button>
+</div>
+

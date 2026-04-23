@@ -18,26 +18,46 @@
 
   @if (user) {
     <form class="editor">
+
       <label for="nickname">Nickname:</label>
       <input name="nickname" type="text" id="nickname" [(ngModel)]="nickname">
+
       <label for="email">Email:</label>
       <input name="email" type="email" id="email" [(ngModel)]="email">
-      <label for="iconUrl">Icon Url:</label>
-      <input type="text" name="iconUrl" id="iconUrl">
-      <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
+
+      <label for="iconUrl">Icon:</label>
+      <p class="deletableElement">
+        <span>Foto Actual:</span> {{iconUrl}}
+        <button class="remove-btn" title="Poner foto por defecto" (click)="resetProfilePic()">X</button>
+        <button class="remove-btn" title="Ver" (click)="showProfilePic()">🔍</button>
+      </p>
+      @if (chachedIcon) {
+        <p class="deletableElement">
+          <span>Nueva Foto:</span> {{chachedIcon.name}}
+          <button class="remove-btn" title="Eliminar" (click)="clearCachePic()">X</button>
+          <button class="remove-btn" title="Ver" (click)="showCachedPic()">🔍</button>
+        </p>
+      }
+      <app-image-input (onImageSelected)="cacheProfilePic($event)"></app-image-input>
+
+      <label for="direcciones">Direcciones:</label>
       @for (dir of direcciones; track $index) {
         <p class="deletableElement">
           - {{dir.id}} - {{dir.calle}} {{dir.portal}} {{dir.piso}} {{dir.poblacion}} {{dir.codigoPostal}}
           <button class="remove-btn" title="Eliminar" (click)="eliminarDireccion(dir)">X</button>
         </p>
       }
-      <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
+      <app-direccion-selector (direccionAñadida)="agregarDireccion($event)"></app-direccion-selector>
+
+      <label for="platos_favoritos">Platos Favoritos:</label>
       @for (plato of platos; track $index) {
         <p class="deletableElement">
           - {{plato.id}} - {{plato.nombre}}
           <button class="remove-btn" title="Eliminar" (click)="eliminarPlato(plato)">X</button>
         </p>
       }
+      <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
+
       <div class="form-buttons">
         <button type="reset" title="Reiniciar los datos del formulario a los orginales" (click)="cargarDatosDeUsuario()">Reiniciar</button>
         <button type="submit" title="Actualizar los datos del usuario" (click)="update()">Actualizar</button>

@@ -1,14 +1,14 @@
-import { StringInput } from './../../util/string-input/string-input';
 import { Plato } from './../../../api/model/plato';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { Pedido, PedidoControllerService, User } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { UserSelector } from "../../selector/user-selector/user-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
+import { ListSelector } from "../../util/list-selector/list-selector";
 
 @Component({
   selector: 'app-pedido-editor',
-  imports: [FormsModule, UserSelector, PlatoSelector, StringInput],
+  imports: [FormsModule, UserSelector, PlatoSelector, ListSelector],
   templateUrl: './pedido-editor.html',
   styleUrl: '../editor-style.css',
 })
@@ -111,8 +111,12 @@ export class PedidoEditor implements OnInit {
   }
 
   agregarModificacion(modif: string) {
-    this.modificaciones.push(modif)
-    this.cdr.detectChanges();
+    if (this.modificaciones.find(m => m === modif)) {
+      alert("Esa modificacion ya esta añadida!")
+    } else {
+      this.modificaciones.push(modif)
+      this.cdr.detectChanges();
+    }
   }
 
   eliminarModificacion(index: number): void {
