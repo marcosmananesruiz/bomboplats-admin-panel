@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ElementDisplay } from '../element-display/element-display';
 import { Restaurante, RestauranteControllerService } from '../../../api';
+import { S3Service } from '../../../service/s3-service';
 
 @Component({
   selector: 'app-restaurante-display',
@@ -14,6 +15,7 @@ export class RestauranteDisplay extends ElementDisplay implements OnInit {
 
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) { super() }
 
@@ -35,5 +37,9 @@ export class RestauranteDisplay extends ElementDisplay implements OnInit {
         }
       }
     )
+  }
+
+  showIcon(iconUrl: string) {
+    window.open(this.s3Service.getFullImageUrl(iconUrl), "_blank")
   }
 }

@@ -28,11 +28,14 @@
       <p class="deletableElement">- {{tag}} <button class="remove-btn" title="Eliminar" (click)="eliminarTag($index)">X</button></p>
     }
     <app-string-input placeholder="Introduce una tag:" (valorAñadido)="agregarTag($event)"></app-string-input>
-    <label for="iconUrls">Icon Urls:</label>
+    <label for="iconUrls">Iconos:</label>
     @for (iconUrl of iconUrls; track $index) {
-      <p class="deletableElement">- {{iconUrl}} <button class="remove-btn" title="Eliminar" (click)="eliminarIconUrl($index)">X</button></p>
+      <p class="deletableElement">- {{iconUrl}}
+        <button class="remove-btn" title="Poner foto por defecto" (click)="eliminarIconUrl($index)">X</button>
+        <button class="remove-btn" title="Ver" (click)="showProfilePic(iconUrl)">🔍</button>
+      </p>
     }
-    <app-string-input placeholder="Introduce la URL:" (valorAñadido)="agregarIconUrl($event)"/>
+    <app-image-input></app-image-input>
     <label for="platos">Platos:</label>
     @for (plato of platos; track $index) {
       <p class="deletableElement">- {{plato.id}} - {{plato.nombre}} <button class="remove-btn" title="Eliminar" (click)="eliminarPlato(plato)">X</button></p>

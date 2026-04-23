@@ -106,13 +106,16 @@ main.main-layout {
   width: 100vw;
   height: calc(100vh - 4rem);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background: #121426;
   color: #f2f4ff;
+  overflow-y: auto;
 }
 
 .welcome-card {
+  margin-top: 25vh;
   text-align: center;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.15);

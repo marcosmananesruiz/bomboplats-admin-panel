@@ -5,6 +5,7 @@ import { DireccionSelector } from "../../selector/direccion-selector/direccion-s
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { S3Service, URLType } from '../../../service/s3-service';
 import { ImageInput } from "../../util/image-input/image-input";
+import { defaultUrlMatcher } from '@angular/router';
 
 @Component({
   selector: 'app-user-editor',
@@ -14,11 +15,11 @@ import { ImageInput } from "../../util/image-input/image-input";
 })
 export class UserEditor implements OnInit {
 
-
-
   userIds: string[] = [];
   selectedId: string = "";
   user: User | null = null;
+
+  test!: string
 
   nickname: string = "";
   email: string = "";
@@ -195,11 +196,6 @@ export class UserEditor implements OnInit {
 
   url(id: string) {
     return this.s3Service.url(URLType.USER, id)
-  }
-
-  downloadProfilePic() { // No funciona por CORS lol
-    if (this.user && this.user.id)
-      this.s3Service.downloadImage(this.iconUrl, this.user.id + ".jpg")
   }
 
   showProfilePic() {

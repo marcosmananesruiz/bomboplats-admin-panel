@@ -19,10 +19,10 @@
         <p>ID: <span>{{user.id}}</span></p>
         <p>Nickname: <span>{{user.nickname}}</span></p>
         <p>Email: <span>{{user.email}}</span></p>
-        <p>Icon Url: <span>{{user.iconUrl}}</span></p>
+        <p>Icono: @if (user.iconUrl) { <button title="Mostrar Imagen" (click)="showIcon(user.iconUrl)">Ver 🔍</button> } @else { <span>-</span>} </p>
         <p>Direcciones (ID):
           @for (direccion of user.direcciones; track $index) {
-            <p><span>- {{direccion.id}}</span></p>
+            <p><span>- {{direccion.id}} - {{direccion.calle}} {{direccion.portal}} {{direccion.piso}}</span></p>
           }
         </p>
         <p>Platos Favoritos (ID):

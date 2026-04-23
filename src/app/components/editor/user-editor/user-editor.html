@@ -33,10 +33,10 @@
       </p>
       @if (chachedIcon) {
         <p class="deletableElement">
-        <span>Nueva Foto:</span> {{chachedIcon.name}}
-        <button class="remove-btn" title="Eliminar" (click)="clearCachePic()">X</button>
-                <button class="remove-btn" title="Ver" (click)="showCachedPic()">🔍</button>
-      </p>
+          <span>Nueva Foto:</span> {{chachedIcon.name}}
+          <button class="remove-btn" title="Eliminar" (click)="clearCachePic()">X</button>
+          <button class="remove-btn" title="Ver" (click)="showCachedPic()">🔍</button>
+        </p>
       }
       <app-image-input (onImageSelected)="cacheProfilePic($event)"></app-image-input>
 

@@ -120,7 +120,7 @@ export class RestauranteAdder {
           let iconUrl : string = this.url(this.restaurante.id, index)
 
           this.restaurante.iconUrls?.push(iconUrl)
-          
+
           this.restauranteService.updateRestaurante(this.restaurante).subscribe({
             error: (err) => this.onError(err),
             complete: () => console.log("Añadida foto al restaurante: " + iconUrl)

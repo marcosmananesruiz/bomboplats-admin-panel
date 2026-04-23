@@ -19,9 +19,16 @@
         <p>ID: <span>{{restaurante.id}}</span></p>
         <p>Nombre: <span>{{restaurante.nombre}}</span></p>
         <p>Descipcion: <span>{{restaurante.description}}</span></p>
-        <p>Icon Urls:
+        <p>Iconos:
+
+          @if (restaurante.iconUrls) {
+            @if (restaurante.iconUrls.length <= 0) {
+              <p>-</p>
+            }
+          }
+
           @for (icon of restaurante.iconUrls; track $index) {
-            <p><span>- {{icon}}</span></p>
+            <p><button title="Mostrar Imagen" (click)="showIcon(icon)">Ver 🔍</button></p>
           }
         </p>
         <p>Tags:
@@ -36,7 +43,7 @@
         </p>
         <p>Direcciones:
           @for (direccion of restaurante.direcciones; track $index) {
-            <p><span>- {{direccion.id}}</span></p>
+            <p><span>- {{direccion.id}} - {{direccion.calle}} {{direccion.portal}}</span></p>
           }
         </p>
         <p>Rating: <span>{{restaurante.rating}}</span></p>

@@ -9,20 +9,5 @@
   </div>
 </header>
 <main class="main-layout">
-  @if (esPaginaIniciar()) {
-    <section class="welcome-card">
-      <h2>Bomboplats Admin Panel</h2>
-      <p>Bienvenido, selecciona una acción en el encabezado para comenzar.</p>
-    </section>
-  } @else {
-    @if (elementDisplay) {
-      <app-display-container></app-display-container>
-    }
-    @if (elementAdder) {
-      <app-adder-container></app-adder-container>
-    }
-    @if (elementEditor) {
-      <app-editor-container></app-editor-container>
-    }
-  }
+  <router-outlet></router-outlet>
 </main>

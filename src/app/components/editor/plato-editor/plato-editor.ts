@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ModuleWithProviders } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { Plato, PlatoControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
+import { S3Service, URLType } from '../../../service/s3-service';
+import { ImageInput } from '../../util/image-input/image-input';
 
 @Component({
   selector: 'app-plato-editor',
-  imports: [FormsModule, StringInput],
+  imports: [FormsModule, StringInput, ImageInput],
   templateUrl: './plato-editor.html',
   styleUrl: '../editor-style.css',
 })
@@ -28,8 +30,11 @@ export class PlatoEditor implements OnInit {
   cargandoPlato: boolean = false;
   errorPlato: boolean = false;
 
+  cachedIcon? : File
+
   constructor(
     @Inject(PlatoControllerService) private platoService: PlatoControllerService,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -82,6 +87,23 @@ export class PlatoEditor implements OnInit {
   }
 
   update() {
+
+    if (this.cachedIcon && this.plato && this.plato.id) {
+      const id = this.plato.id
+      const icon = this.cachedIcon
+      this.platoService.getPlatoIconUploadUrl(id).subscribe({
+        next: (presignedUrl) => {
+          this.s3Service.saveImage(presignedUrl, icon)
+          const url = this.s3Service.url(URLType.PLATO, id)
+          this.iconUrl = url;
+        },
+        error: (err) => {
+          console.error(err)
+          alert("Se ha producido un error para guardar la foto!")
+        }
+      })
+    }
+
     this.platoService.updatePlato({
       id: this.plato?.id,
       nombre: this.nombre,
@@ -153,5 +175,27 @@ export class PlatoEditor implements OnInit {
     if (index !== -1) {
       this.platoIds.splice(index, 1)
     }
+  }
+
+  resetIcon() {
+    this.iconUrl = this.s3Service.DEAFULT_PLATO_PIC
+  }
+
+  showIcon() {
+    window.open(this.s3Service.getFullImageUrl(this.iconUrl), "_blank")
+  }
+
+  clearCachePic() {
+    this.cachedIcon = undefined;
+  }
+
+  showCachedIcon() {
+    if (this.cachedIcon) {
+      window.open(URL.createObjectURL(this.cachedIcon), "_blank")
+    }
+  }
+
+  cachePic(image: File) {
+    this.cachedIcon = image
   }
 }

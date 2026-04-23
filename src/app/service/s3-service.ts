@@ -1,5 +1,3 @@
-import { UrlTree } from '@angular/router';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
@@ -46,32 +44,15 @@ export class S3Service {
     return this.BUCKET_NAME + iconUrl
   }
 
-  downloadImage(url: string, nombreArchivo: string) { // NO va a funcionar por el CORS
-    this.http.get(
-      this.getFullImageUrl(url),
-      {responseType: 'blob'}
-    ).subscribe({
-      next(value) {
-        const link = document.createElement("a")
-        link.href = URL.createObjectURL(value)
-        link.download = nombreArchivo
-        link.click()
-        URL.revokeObjectURL(link.href)
-      },
-      error: (err) => this.onError(err)
-    })
-  }
-
-
   url(urlType: URLType, id: string, index?: number): string {
     switch (urlType) {
       case URLType.USER: return this.USER_DIRECTORY + id + this.IMAGE_EXTENSION // profile/U1.jpg
       case URLType.PLATO: return this.PLATO_DIRECTORY + id + this.IMAGE_EXTENSION // platos/T1.jpg
       case URLType.REST: {
-        if (index) {
+        if (index !== undefined) {
           return this.RESTAURANTE_DIRECTORY + id + "/" + index + this.IMAGE_EXTENSION // restaurantes/R1/0.jpg
         } else {
-          return "MISSING INDEX"
+          throw new Error("REST UrlType must have index parameter")
         }
       }
     }

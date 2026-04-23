@@ -3,6 +3,7 @@ import { User } from '../../../api/model/user';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ElementDisplay } from '../element-display/element-display';
+import { S3Service } from '../../../service/s3-service';
 
 @Component({
   selector: 'app-user-display',
@@ -15,6 +16,7 @@ export class UserDisplay extends ElementDisplay implements OnInit{
 
   constructor(
     @Inject(UserControllerService) private userService: UserControllerService,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) {super()}
 
@@ -39,5 +41,9 @@ export class UserDisplay extends ElementDisplay implements OnInit{
         }
       }
     })
+  }
+
+  showIcon(iconUrl: string) {
+    window.open(this.s3Service.getFullImageUrl(iconUrl), "_blank")
   }
 }
