@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ImageInput } from "../../util/image-input/image-input";
+import { S3Service, URLType } from '../../../service/s3-service';
 
 @Component({
   selector: 'app-plato-adder',
@@ -33,7 +34,7 @@ export class PlatoAdder implements OnInit {
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
     @Inject(PlatoControllerService) private platoService: PlatoControllerService,
-    private http: HttpClient,
+    private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -57,26 +58,45 @@ ngOnInit(): void {
 
   registerPlato(): void {
     if (this.verificarDatos()) {
-      this.restauranteService.registerPlato(this.restauranteId, {
-        nombre: this.nombre,
-        description: this.descripcion,
-        tags: this.tags,
-        iconUrl: this.iconUrl,
-        possibleModifications: this.possibleModifications,
-        precio: this.precio
-      }).subscribe({
-        next: (data) => {
-          console.log("Se ha registrado el plato!")
-        },
-        error: (err) => this.onError(err),
-        complete: () => {
-          this.guardarFoto();
-          alert("Se ha registrado el plato correctamente")
+
+      if (this.icon) {
+        if (this.plato && this.plato.id) {
+          const icon = this.icon
+          const id = this.plato.id
+
+          this.platoService.getPlatoIconUploadUrl(id).subscribe({
+            next: (presignedUrl) => {
+              this.s3Service.saveImage(presignedUrl, icon)
+              this.iconUrl = this.s3Service.url(URLType.PLATO, id)
+              this.register()
+            },
+            error: (err) => this.onError(err)
+          })
         }
-      })
-    } else {
-      alert("Los datos son incorrectos!")
+      } else {
+        this.iconUrl = this.s3Service.DEAFULT_PLATO_PIC
+        this.register()
+      }
     }
+  }
+
+  register() {
+    this.restauranteService.registerPlato(this.restauranteId, {
+      nombre: this.nombre,
+      description: this.descripcion,
+      tags: this.tags,
+      iconUrl: this.iconUrl,
+      possibleModifications: this.possibleModifications,
+      precio: this.precio
+    }).subscribe({
+      next: (data) => {
+        console.log("Se ha registrado el plato!")
+      },
+      error: (err) => this.onError(err),
+      complete: () => {
+        alert("Se ha registrado el plato correctamente")
+      }
+    })
   }
 
   agregarModificacion(modif: string) {
@@ -107,45 +127,10 @@ ngOnInit(): void {
     let nombreCorrecto = this.nombre.length <= 32;
     let descripcionCorrecta = this.descripcion.length <= 128
     let tagsCorrectas = true;
-
     let modificacionesCorrectas = true;
-
     let precioCorrecto = this.precio > 0;
 
     return nombreCorrecto && descripcionCorrecta && tagsCorrectas && modificacionesCorrectas && precioCorrecto;
-  }
-
-  guardarFoto() {
-    if (this.icon && this.plato && this.plato.id) {
-
-      this.platoService.getPlatoIconUploadUrl(this.plato.id).subscribe({
-        next: (presignedUrl) => {
-          if (this.icon) {
-            const header = new HttpHeaders({
-              'Content-Type': this.icon?.type
-            })
-
-            this.http.put(presignedUrl, this.icon, {"headers": header}).subscribe({
-              complete: () => {
-                if (this.plato && this.plato.id) { // Se que esta dos veces esto, pero TS es gilipollas y se queja
-
-                  const iconUrl = this.url(this.plato.id)
-                  this.plato.iconUrl = iconUrl;
-                  this.platoService.updatePlato(this.plato).subscribe({
-                    complete: () => console.log("Se ha guardado la foto del plato"),
-                    error: (err) => this.onError(err)
-                  })
-
-                }
-              },
-              error: (err) => this.onError(err)
-            })
-
-          }
-        },
-        error: (err) => this.onError(err)
-      })
-    }
   }
 
   onError(err: any) {

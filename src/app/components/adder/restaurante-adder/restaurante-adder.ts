@@ -1,3 +1,4 @@
+import { S3Service, URLType } from './../../../service/s3-service';
 import { OpenApiHttpParams } from './../../../api/query.params';
 import { Component, Inject } from '@angular/core';
 import { Direccion, Plato, Restaurante, RestauranteControllerService } from '../../../api';
@@ -29,6 +30,7 @@ export class RestauranteAdder {
 
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
+    private s3Service: S3Service,
     private http: HttpClient
   ) { }
 
@@ -62,6 +64,38 @@ export class RestauranteAdder {
   }
 
   registerRestaurante(): void {
+
+    if (this.icons.length > 0) {
+      if (this.restaurante && this.restaurante.id) {
+
+        const id = this.restaurante.id
+
+        for (let i = 0; i < this.icons.length; i++) {
+
+          const icon = this.icons.at(i)
+
+          this.restauranteService.getRestauranteIconUploadUrl(id, 0).subscribe({
+            next: (presignedUrl) => {
+              if (icon) {
+                this.s3Service.saveImage(presignedUrl, icon)
+              }
+            },
+            complete: () => {
+              const url = this.s3Service.url(URLType.REST, id, i)
+              this.iconUrls.push(url)
+              this.registrarRestaurante()
+            }
+          })
+        }
+      }
+    } else {
+      this.iconUrls = [this.s3Service.DEFAULT_RESTAURANTE_PIC]
+      this.registrarRestaurante();
+    }
+
+  }
+
+  registrarRestaurante() {
     this.restauranteService.register({
       nombre: this.nombre,
       description: this.descipcion,
@@ -76,67 +110,13 @@ export class RestauranteAdder {
       },
       error: (err) => this.onError(err),
       complete: () => {
-        this.guardarFotos()
         alert("Se ha registrado el restaurante!")
       }
     })
   }
 
-  guardarFotos() {
-    if (this.icons && this.restaurante && this.restaurante.id) {
-      for (let i = 0; i < this.icons.length; i++) {
-        let icon = this.icons[i]
-
-        if (!icon) {
-          continue
-        }
-
-        let uploadUrl : string;
-        this.restauranteService.getRestauranteIconUploadUrl(this.restaurante.id, i).subscribe({
-          next: (data) => {
-            uploadUrl = data
-          },
-          error: (err) => this.onError(err),
-          complete: () => {
-            if (uploadUrl && icon) this.registerFoto(icon, uploadUrl, i)
-          }
-        })
-      }
-    }
-  }
-
-  registerFoto(icon: File, uploadUrl: string, index: number) {
-
-    const header = new HttpHeaders({
-      'Content-Type': icon.type
-    })
-
-    this.http.put(uploadUrl, icon).subscribe({
-      error: (err) => this.onError(err),
-      complete: () => {
-        console.log("Foto de restaurante guardado: " + uploadUrl)
-        if (this.restaurante && this.restaurante.id) {
-
-          let iconUrl : string = this.url(this.restaurante.id, index)
-
-          this.restaurante.iconUrls?.push(iconUrl)
-
-          this.restauranteService.updateRestaurante(this.restaurante).subscribe({
-            error: (err) => this.onError(err),
-            complete: () => console.log("Añadida foto al restaurante: " + iconUrl)
-          })
-        }
-      }
-    })
-  }
-
-
   onError(err: any) {
     console.error(err)
     alert("Se ha producido un error registrando el restaurante")
-  }
-
-  url(id: string, index: number): string {
-    return "restaurantes/" + id + "/" + index + ".jpg"
   }
 }

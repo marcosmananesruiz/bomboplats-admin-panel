@@ -50,7 +50,7 @@ export class S3Service {
       case URLType.PLATO: return this.PLATO_DIRECTORY + id + this.IMAGE_EXTENSION // platos/T1.jpg
       case URLType.REST: {
         if (index !== undefined) {
-          return this.RESTAURANTE_DIRECTORY + id + "/" + index + this.IMAGE_EXTENSION // restaurantes/R1/0.jpg
+          return this.RESTAURANTE_DIRECTORY + id + "_" + index + this.IMAGE_EXTENSION // restaurantes/R1/0.jpg
         } else {
           throw new Error("REST UrlType must have index parameter")
         }
