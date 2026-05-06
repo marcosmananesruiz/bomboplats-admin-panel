@@ -96,14 +96,19 @@ export class PlatoEditor implements OnInit {
           this.s3Service.saveImage(presignedUrl, icon)
           const url = this.s3Service.url(URLType.PLATO, id)
           this.iconUrl = url;
+          this.updatePlato()
         },
         error: (err) => {
           console.error(err)
           alert("Se ha producido un error para guardar la foto!")
         }
       })
+    } else {
+      this.updatePlato();
     }
+  }
 
+  updatePlato() {
     this.platoService.updatePlato({
       id: this.plato?.id,
       nombre: this.nombre,

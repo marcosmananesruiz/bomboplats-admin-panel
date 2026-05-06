@@ -93,11 +93,16 @@ export class UserEditor implements OnInit {
             const iconUrl = this.url(this.user.id||"")
             if (this.chachedIcon) this.s3Service.saveImage(presignedUrl, this.chachedIcon)
             this.iconUrl = iconUrl;
+            this.updateUser()
           }
         }
       })
+    } else {
+      this.updateUser();
     }
+  }
 
+  updateUser() {
     this.userService.updateUser({
       id: this.user?.id,
       nickname: this.nickname,
