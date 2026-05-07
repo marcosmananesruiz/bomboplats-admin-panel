@@ -74,6 +74,7 @@ ngOnInit(): void {
       next: (data) => {
         console.log("Se ha registrado el plato!")
         this.plato = data;
+        alert("Se ha guardado el plato!")
       },
       error: (err) => this.onError(err),
       complete: () => {
