@@ -23,7 +23,7 @@ export class RestauranteEditor implements OnInit {
   description: string = "";
   iconUrls: Array<string> = [];
   tags: Array<string> = [];
-  platos: Set<Plato> = new Set();
+  platos: Array<Plato> = [];
   direcciones: Array<Direccion> = [];
   rating: number = 0;
 
@@ -81,19 +81,49 @@ export class RestauranteEditor implements OnInit {
   }
 
   cargarDatosRestaurante() {
-    this.nombre = this.restaurante?.nombre || "";
-    this.description = this.restaurante?.description || "";
-    this.iconUrls = this.restaurante?.iconUrls || [];
-    this.tags = this.restaurante?.tags || [];
-    this.platos = this.restaurante?.platos || new Set();
-    this.direcciones = this.restaurante?.direcciones || [];
-    this.rating = this.restaurante?.rating || 0
+    if (this.restaurante) {
+      this.nombre = this.restaurante.nombre || "";
+      this.description = this.restaurante.description || "";
+      this.iconUrls = this.restaurante.iconUrls || [];
+      this.tags = this.restaurante.tags || [];
+      this.platos = this.restaurante.platos as any || [];
+      this.direcciones = this.restaurante?.direcciones || [];
+      this.rating = this.restaurante?.rating || 0
+    }
   }
 
   update(): void {
+    if (this.cachedImages && this.restaurante && this.restaurante.id) {
+      const id = this.restaurante.id;
+      const iconsNumbe = this.iconUrls.length;
 
-    this.guardarFotos();
-    
+      for (let i = 0; i < this.cachedImages.length; i++) {
+
+        const index = iconsNumbe + i;
+        const iconUrl = this.s3Service.url(URLType.REST, id, index)
+
+        this.restauranteService.getRestauranteIconUploadUrl(id, index).subscribe({
+          next: (presignedUrl) => {
+            const foto = this.cachedImages.at(i)
+            this.s3Service.saveImage(presignedUrl, foto!)
+            this.restaurante?.iconUrls?.push(iconUrl)
+
+            if (i === this.cachedImages.length - 1) { // Si es la ultima imagen
+              this.updateRestaurante();
+            }
+          },
+          error: (err) => {
+            console.error(err)
+            alert("Se ha producido un error guardando la " + (i+1) + "ª imagen!")
+          }
+        })
+      }
+    } else {
+      this.updateRestaurante()
+    }
+  }
+
+  updateRestaurante() {
     this.restauranteService.updateRestaurante({
       id: this.restaurante?.id,
       nombre: this.nombre,
@@ -140,11 +170,11 @@ export class RestauranteEditor implements OnInit {
   }
 
   agregarPlato(plato: Plato) {
-    this.platos.add(plato)
+    this.platos.push(plato)
   }
 
-  eliminarPlato(plato: Plato) {
-    this.platos.delete(plato)
+  eliminarPlato(index: number) {
+    this.platos.splice(index, 1)
   }
 
   agregarDireccion(direccion: Direccion) {
@@ -189,27 +219,5 @@ export class RestauranteEditor implements OnInit {
 
   showProfilePic(iconUrl: string) {
     window.open(this.s3Service.getFullImageUrl(iconUrl), "_blank")
-  }
-
-  guardarFotos() {
-    if (this.cachedImages && this.restaurante && this.restaurante.id) {
-
-      const id = this.restaurante.id;
-      const iconsNumbe = this.iconUrls.length;
-
-      for (let i = 0; i < this.cachedImages.length; i++) {
-
-        const index = iconsNumbe + i;
-        const iconUrl = this.s3Service.url(URLType.REST, id, index)
-
-        this.restauranteService.getRestauranteIconUploadUrl(id, index).subscribe({
-          next: (presignedUrl) => {
-            const foto = this.cachedImages.at(i)
-            this.s3Service.saveImage(presignedUrl, foto!)
-            this.restaurante?.iconUrls?.push(iconUrl)
-          }
-        })
-      }
-    }
   }
 }

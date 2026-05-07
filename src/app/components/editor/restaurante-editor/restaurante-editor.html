@@ -38,7 +38,7 @@
     <app-image-input></app-image-input>
     <label for="platos">Platos:</label>
     @for (plato of platos; track $index) {
-      <p class="deletableElement">- {{plato.id}} - {{plato.nombre}} <button class="remove-btn" title="Eliminar" (click)="eliminarPlato(plato)">X</button></p>
+      <p class="deletableElement">- {{plato.id}} - {{plato.nombre}} <button class="remove-btn" title="Eliminar" (click)="eliminarPlato($index)">X</button></p>
     }
     <app-plato-selector (platoAñadido)="agregarPlato($event)"></app-plato-selector>
     <label for="direcciones">Direcciones:</label>

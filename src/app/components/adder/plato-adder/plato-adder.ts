@@ -59,6 +59,30 @@ ngOnInit(): void {
   registerPlato(): void {
     if (this.verificarDatos()) {
 
+    }
+  }
+
+  register() {
+    this.restauranteService.registerPlato(this.restauranteId, {
+      nombre: this.nombre,
+      description: this.descripcion,
+      tags: this.tags,
+      iconUrl: this.s3Service.DEAFULT_PLATO_PIC,
+      possibleModifications: this.possibleModifications,
+      precio: this.precio
+    }).subscribe({
+      next: (data) => {
+        console.log("Se ha registrado el plato!")
+        this.plato = data;
+      },
+      error: (err) => this.onError(err),
+      complete: () => {
+        this.actualizarFoto()
+      }
+    })
+  }
+
+  actualizarFoto() {
       if (this.icon) {
         if (this.plato && this.plato.id) {
           const icon = this.icon
@@ -68,35 +92,32 @@ ngOnInit(): void {
             next: (presignedUrl) => {
               this.s3Service.saveImage(presignedUrl, icon)
               this.iconUrl = this.s3Service.url(URLType.PLATO, id)
-              this.register()
+              this.platoService.updatePlato({
+                id: this.plato?.id,
+                nombre: this.plato?.nombre,
+                description: this.plato?.description,
+                tags: this.plato?.tags,
+                iconUrl: this.iconUrl,
+                possibleModifications: this.plato?.possibleModifications,
+                precio: this.plato?.precio
+              }).subscribe({
+                next: (data) => {
+                  if (data) {
+                    console.log("Se ha guardado la foto del plato " + this.plato?.id)
+                  } else {
+                    console.error("No se ha guardado la foto")
+                  }
+                },
+                error: (err) =>  {
+                  console.error(err)
+                  alert("Se ha producido un error guardando la foto!")
+                }
+              })
             },
             error: (err) => this.onError(err)
           })
         }
-      } else {
-        this.iconUrl = this.s3Service.DEAFULT_PLATO_PIC
-        this.register()
       }
-    }
-  }
-
-  register() {
-    this.restauranteService.registerPlato(this.restauranteId, {
-      nombre: this.nombre,
-      description: this.descripcion,
-      tags: this.tags,
-      iconUrl: this.iconUrl,
-      possibleModifications: this.possibleModifications,
-      precio: this.precio
-    }).subscribe({
-      next: (data) => {
-        console.log("Se ha registrado el plato!")
-      },
-      error: (err) => this.onError(err),
-      complete: () => {
-        alert("Se ha registrado el plato correctamente")
-      }
-    })
   }
 
   agregarModificacion(modif: string) {

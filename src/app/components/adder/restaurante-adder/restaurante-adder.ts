@@ -1,12 +1,9 @@
 import { S3Service, URLType } from './../../../service/s3-service';
-import { OpenApiHttpParams } from './../../../api/query.params';
 import { Component, Inject } from '@angular/core';
 import { Direccion, Plato, Restaurante, RestauranteControllerService } from '../../../api';
-import { PlatoSelector } from '../../selector/plato-selector/plato-selector';
 import { DireccionSelector } from '../../selector/direccion-selector/direccion-selector';
 import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ImageInput } from "../../util/image-input/image-input";
 
 @Component({
@@ -31,7 +28,6 @@ export class RestauranteAdder {
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
     private s3Service: S3Service,
-    private http: HttpClient
   ) { }
 
 
@@ -65,42 +61,11 @@ export class RestauranteAdder {
 
   registerRestaurante(): void {
 
-    if (this.icons.length > 0) {
-      if (this.restaurante && this.restaurante.id) {
-
-        const id = this.restaurante.id
-
-        for (let i = 0; i < this.icons.length; i++) {
-
-          const icon = this.icons.at(i)
-
-          this.restauranteService.getRestauranteIconUploadUrl(id, 0).subscribe({
-            next: (presignedUrl) => {
-              if (icon) {
-                this.s3Service.saveImage(presignedUrl, icon)
-              }
-            },
-            complete: () => {
-              const url = this.s3Service.url(URLType.REST, id, i)
-              this.iconUrls.push(url)
-              this.registrarRestaurante()
-            }
-          })
-        }
-      }
-    } else {
-      this.iconUrls = [this.s3Service.DEFAULT_RESTAURANTE_PIC]
-      this.registrarRestaurante();
-    }
-
-  }
-
-  registrarRestaurante() {
     this.restauranteService.register({
       nombre: this.nombre,
       description: this.descipcion,
       tags: this.tags,
-      iconUrls: this.iconUrls,
+      iconUrls: [this.s3Service.DEFAULT_RESTAURANTE_PIC],
       rating: this.rating,
       platos: [...this.platos] as unknown as Set<Plato>,
       direcciones: this.direcciones
@@ -110,9 +75,40 @@ export class RestauranteAdder {
       },
       error: (err) => this.onError(err),
       complete: () => {
-        alert("Se ha registrado el restaurante!")
+        this.guardarFotos()
       }
     })
+  }
+
+  guardarFotos() {
+    if (this.icons.length > 0) {
+      if (this.restaurante && this.restaurante.id) {
+
+        const id = this.restaurante.id
+
+        for (let i = 0; i < this.icons.length; i++) {
+
+          const icon = this.icons.at(i)
+
+          this.restauranteService.getRestauranteIconUploadUrl(id, i).subscribe({
+            next: (presignedUrl) => {
+              if (icon) {
+                this.s3Service.saveImage(presignedUrl, icon)
+              }
+            },
+            complete: () => {
+              const url = this.s3Service.url(URLType.REST, id, i)
+              this.iconUrls.push(url)
+
+              if (i === this.icons.length - 1) {
+                alert("Se ha guardado el restaurante")
+              }
+            },
+            error: (err) => this.onError(err)
+          })
+        }
+      }
+    }
   }
 
   onError(err: any) {
