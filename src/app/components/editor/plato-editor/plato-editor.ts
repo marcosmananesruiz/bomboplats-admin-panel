@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { Plato, PlatoControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
-import { S3Service, URLType } from '../../../service/s3-service';
+import { S3Service, URLType } from '../../../service/s3-service/s3-service';
 import { ImageInput } from '../../util/image-input/image-input';
 
 @Component({

@@ -3,7 +3,7 @@ import { Direccion, Plato, User, UserControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
-import { S3Service, URLType } from '../../../service/s3-service';
+import { S3Service, URLType } from '../../../service/s3-service/s3-service';
 import { ImageInput } from "../../util/image-input/image-input";
 import { defaultUrlMatcher } from '@angular/router';
 

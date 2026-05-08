@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from './service/auth-service/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,10 @@ import { Router, RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = 'bomboplats-admin-panel';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
   mostrarElementDisplay(): void {
     this.router.navigate(['/display']);
@@ -26,5 +30,14 @@ export class App {
 
   reiniciarPagina(): void {
     this.router.navigate(['/']);
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.isLogged();
+  }
+
+  logout() {
+    this.auth.revokeAccess();
+    this.router.navigate(["/login"])
   }
 }

@@ -1,27 +1,53 @@
-label {
+.selector-label {
   margin-top: 15vh;
-	font-weight: bold;
-	margin-bottom: 0.25rem;
-	display: block;
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-select {
-	padding: 0.5rem;
-	border: 1px solid #6b4a9f;
-	border-radius: 0.25rem;
-	background-color: #6b4a9f;
-	color: #ffffff;
-	font-weight: 400;
+.button-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-bottom: 2px solid #7744ff;
 }
 
-select:focus {
-	outline: none;
-	border-color: #7744ff;
-	background-color: #5a3a8f;
+.entity-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
-select option {
-	background-color: #4a2c7d;
-	color: #ffffff;
+.entity-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: #ffffff;
+}
+
+.entity-btn.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-bottom-color: #7744ff;
+  color: #7744ff;
+}
+
+@media (max-width: 600px) {
+  .button-selector {
+    gap: 0.5rem;
+  }
+
+  .entity-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
 }
 

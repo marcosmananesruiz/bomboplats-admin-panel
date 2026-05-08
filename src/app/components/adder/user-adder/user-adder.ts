@@ -1,7 +1,9 @@
 import { UserRegister } from '../../../api/model/userRegister';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UserControllerService } from '../../../api';
 import { FormsModule } from "@angular/forms";
+import { AuthService } from '../../../service/auth-service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-adder',
@@ -9,13 +11,24 @@ import { FormsModule } from "@angular/forms";
   templateUrl: './user-adder.html',
   styleUrl: '../adders-style.css',
 })
-export class UserAdder {
+export class UserAdder implements OnInit {
 
   nickname: string = "";
   email: string = "";
   password: string = "";
 
-  constructor(@Inject(UserControllerService) private userService: UserControllerService) {}
+  constructor(
+    @Inject(UserControllerService) private userService: UserControllerService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
+
+
+  ngOnInit(): void {
+    if (!this.auth.isLogged()) {
+      this.router.navigate(["/login"])
+    }
+  }
 
   registerUser(): void {
 

@@ -2,7 +2,7 @@ import { Plato } from './../../../api/model/plato';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ElementDisplay } from '../element-display/element-display';
 import { PlatoControllerService } from '../../../api';
-import { S3Service } from '../../../service/s3-service';
+import { S3Service } from '../../../service/s3-service/s3-service';
 
 @Component({
   selector: 'app-plato-display',
@@ -38,6 +38,12 @@ export class PlatoDisplay extends ElementDisplay implements OnInit {
         }
       }
     })
+  }
+
+  refresh() {
+    this.platos = []
+    this.cargando = true;
+    this.ngOnInit();
   }
 
   showIcon(iconUrl: string) {

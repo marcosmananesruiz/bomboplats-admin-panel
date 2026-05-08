@@ -39,4 +39,10 @@ export class PedidoDisplay extends ElementDisplay implements OnInit {
       }
     )
   }
+
+  refresh() {
+    this.pedidos = []
+    this.cargando = true;
+    this.ngOnInit()
+  }
 }

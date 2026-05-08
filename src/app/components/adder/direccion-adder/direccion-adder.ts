@@ -1,6 +1,8 @@
 import { FormsModule } from '@angular/forms';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Direccion, DireccionControllerService } from '../../../api';
+import { AuthService } from '../../../service/auth-service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-direccion-adder',
@@ -8,7 +10,7 @@ import { Direccion, DireccionControllerService } from '../../../api';
   templateUrl: './direccion-adder.html',
   styleUrl: '../adders-style.css',
 })
-export class DireccionAdder {
+export class DireccionAdder implements OnInit {
   poblacion: string = "";
   codigoPostal: string = "";
   calle: string = "";
@@ -16,8 +18,16 @@ export class DireccionAdder {
   piso: string = "";
 
   constructor(
-    @Inject(DireccionControllerService) private direccionService: DireccionControllerService
+    @Inject(DireccionControllerService) private direccionService: DireccionControllerService,
+    private auth: AuthService,
+    private router: Router
   ) { }
+
+  ngOnInit(): void {
+    if (!this.auth.isLogged()) {
+      this.router.navigate(["/login"])
+    }
+  }
 
   registrarDireccion(): void {
     if (this.verificarDatos()) {

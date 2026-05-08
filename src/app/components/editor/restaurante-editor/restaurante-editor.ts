@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
-import { S3Service, URLType } from '../../../service/s3-service';
+import { S3Service, URLType } from '../../../service/s3-service/s3-service';
 import { ImageInput } from "../../util/image-input/image-input";
 
 @Component({

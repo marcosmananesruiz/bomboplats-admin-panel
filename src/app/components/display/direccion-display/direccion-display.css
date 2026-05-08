@@ -23,3 +23,31 @@
   padding-right: 0.5rem;
   clear: both;
 }
+
+.containerTitle {
+  display: flex;
+  overflow-y: auto;
+  max-height: 13vh;
+  gap: 31rem;
+}
+
+.refresh {
+  margin-top: 1vw;
+  width: 2rem;
+  height: 2rem;
+  background-color: #7744ff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-image: url(../../../../assets/refresh.png);
+  background-size: 1.4rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.refresh:hover {
+  background-color: #6b4a9f;
+  cursor: pointer;
+}
+
+
+

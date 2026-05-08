@@ -1,9 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Pedido, PedidoControllerService, Plato, User } from '../../../api';
 import { FormsModule } from "@angular/forms";
 import { UserSelector } from "../../selector/user-selector/user-selector";
 import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { ListSelector } from "../../util/list-selector/list-selector";
+import { AuthService } from '../../../service/auth-service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pedido-adder',
@@ -11,7 +13,7 @@ import { ListSelector } from "../../util/list-selector/list-selector";
   templateUrl: './pedido-adder.html',
   styleUrl: '../adders-style.css',
 })
-export class PedidoAdder {
+export class PedidoAdder implements OnInit {
 
   user: User = {}
   plato: Plato = {};
@@ -21,7 +23,15 @@ export class PedidoAdder {
 
   constructor(
     @Inject(PedidoControllerService) private pedidoService: PedidoControllerService,
+    private auth: AuthService,
+    private router: Router
   ) {}
+
+    ngOnInit(): void {
+    if (!this.auth.isLogged()) {
+      this.router.navigate(["/login"])
+    }
+  }
 
   registerPedido(): void {
     const body = {

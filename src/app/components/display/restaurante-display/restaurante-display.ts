@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ElementDisplay } from '../element-display/element-display';
 import { Restaurante, RestauranteControllerService } from '../../../api';
-import { S3Service } from '../../../service/s3-service';
+import { S3Service } from '../../../service/s3-service/s3-service';
 
 @Component({
   selector: 'app-restaurante-display',
@@ -37,6 +37,12 @@ export class RestauranteDisplay extends ElementDisplay implements OnInit {
         }
       }
     )
+  }
+
+  refresh() {
+    this.restaurantes = []
+    this.cargando = true;
+    this.ngOnInit()
   }
 
   showIcon(iconUrl: string) {

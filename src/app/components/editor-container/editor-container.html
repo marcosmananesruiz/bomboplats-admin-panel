@@ -1,11 +1,36 @@
-<label for="entitySelect">Selecciona la Entidad: </label>
-<select name="entitySelect" id="entitySelect" [(ngModel)]="entitySelected">
-  <option value="usuario">Usuario</option>
-  <option value="direccion">Direccion</option>
-  <option value="plato">Plato</option>
-  <option value="restaurante">Restaurante</option>
-  <option value="pedido">Pedido</option>
-</select>
+<label class="selector-label">Selecciona la entidad:</label>
+<div class="button-selector">
+  <button
+    class="entity-btn"
+    [class.active]="entitySelected === 'usuario'"
+    (click)="entitySelected = 'usuario'">
+    Usuario
+  </button>
+  <button
+    class="entity-btn"
+    [class.active]="entitySelected === 'direccion'"
+    (click)="entitySelected = 'direccion'">
+    Dirección
+  </button>
+  <button
+    class="entity-btn"
+    [class.active]="entitySelected === 'plato'"
+    (click)="entitySelected = 'plato'">
+    Plato
+  </button>
+  <button
+    class="entity-btn"
+    [class.active]="entitySelected === 'restaurante'"
+    (click)="entitySelected = 'restaurante'">
+    Restaurante
+  </button>
+  <button
+    class="entity-btn"
+    [class.active]="entitySelected === 'pedido'"
+    (click)="entitySelected = 'pedido'">
+    Pedido
+  </button>
+</div>
 
 @switch (entitySelected) {
   @case ('usuario') {

@@ -1,10 +1,12 @@
-import { S3Service, URLType } from './../../../service/s3-service';
-import { Component, Inject } from '@angular/core';
+import { S3Service, URLType } from '../../../service/s3-service/s3-service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Direccion, Plato, Restaurante, RestauranteControllerService } from '../../../api';
 import { DireccionSelector } from '../../selector/direccion-selector/direccion-selector';
 import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
 import { ImageInput } from "../../util/image-input/image-input";
+import { AuthService } from '../../../service/auth-service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restaurante-adder',
@@ -12,7 +14,7 @@ import { ImageInput } from "../../util/image-input/image-input";
   templateUrl: './restaurante-adder.html',
   styleUrl: '../adders-style.css',
 })
-export class RestauranteAdder {
+export class RestauranteAdder implements OnInit {
 
   nombre: string = "";
   descipcion: string = "";
@@ -27,9 +29,16 @@ export class RestauranteAdder {
 
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
+    private auth: AuthService,
+    private router: Router,
     private s3Service: S3Service,
   ) { }
 
+  ngOnInit(): void {
+    if (!this.auth.isLogged()) {
+      this.router.navigate(["/login"])
+    }
+  }
 
   agregarDireccion(direccion: Direccion): void {
     if (!this.direcciones.find(d => d.id === direccion.id)) {

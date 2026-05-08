@@ -5,7 +5,9 @@ import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ImageInput } from "../../util/image-input/image-input";
-import { S3Service, URLType } from '../../../service/s3-service';
+import { S3Service, URLType } from '../../../service/s3-service/s3-service';
+import { AuthService } from '../../../service/auth-service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plato-adder',
@@ -34,32 +36,34 @@ export class PlatoAdder implements OnInit {
   constructor(
     @Inject(RestauranteControllerService) private restauranteService: RestauranteControllerService,
     @Inject(PlatoControllerService) private platoService: PlatoControllerService,
+    private auth: AuthService,
+    private router: Router,
     private s3Service: S3Service,
     private cdr: ChangeDetectorRef
   ) { }
 
-ngOnInit(): void {
-  this.restauranteService.findAll1().subscribe({
-    next: (data) => {
-      this.restaurantes = data;
-    },
-    error: (err) => {
-      console.error(err)
-      this.errorRestaurantes = true;
-      this.cargandoRestaurantes = false;
-      this.cdr.detectChanges();
-    },
-    complete: () => {
-      this.cargandoRestaurantes = false;
-      this.cdr.detectChanges();
-    }
-  })
-}
+  ngOnInit(): void {
 
-  registerPlato(): void {
-    if (this.verificarDatos()) {
-
+    if (!this.auth.isLogged()) {
+      this.router.navigate(["/login"])
     }
+
+
+    this.restauranteService.findAll1().subscribe({
+      next: (data) => {
+        this.restaurantes = data;
+      },
+      error: (err) => {
+        console.error(err)
+        this.errorRestaurantes = true;
+        this.cargandoRestaurantes = false;
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.cargandoRestaurantes = false;
+        this.cdr.detectChanges();
+      }
+    })
   }
 
   register() {

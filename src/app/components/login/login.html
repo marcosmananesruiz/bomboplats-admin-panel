@@ -1,0 +1,11 @@
+
+<form class="login-form">
+  <label for="password">Introduce la contraseña de acceso:</label>
+  @if (error) {
+    <p class="error">La contraseña no es correcta</p>
+  }
+  <input type="password" name="password" id="password" [(ngModel)]="introducedPasword">
+  <div class="form-buttons">
+    <button type="button" (click)="login()">Entrar</button>
+  </div>
+</form>

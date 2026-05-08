@@ -3,7 +3,7 @@ import { User } from '../../../api/model/user';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ElementDisplay } from '../element-display/element-display';
-import { S3Service } from '../../../service/s3-service';
+import { S3Service } from '../../../service/s3-service/s3-service';
 
 @Component({
   selector: 'app-user-display',
@@ -41,6 +41,12 @@ export class UserDisplay extends ElementDisplay implements OnInit{
         }
       }
     })
+  }
+
+  refresh() {
+    this.users = []
+    this.cargando = true
+    this.ngOnInit()
   }
 
   showIcon(iconUrl: string) {

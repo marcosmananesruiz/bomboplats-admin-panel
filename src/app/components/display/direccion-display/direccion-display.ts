@@ -35,4 +35,10 @@ export class DireccionDisplay extends ElementDisplay implements OnInit  {
     })
   }
 
+  refresh() {
+    this.direcciones = [];
+    this.cargando = true;
+    this.ngOnInit();
+  }
+
 }
