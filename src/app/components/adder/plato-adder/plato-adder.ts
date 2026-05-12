@@ -25,6 +25,8 @@ export class PlatoAdder implements OnInit {
   possibleModifications: string[] = [];
   precio: number = 0;
 
+  categoria : string = "";
+
   restaurantes: Restaurante[] = [];
   errorRestaurantes: boolean = false;
   cargandoRestaurantes: boolean = true;
@@ -85,6 +87,11 @@ export class PlatoAdder implements OnInit {
         this.actualizarFoto()
       }
     })
+  }
+
+  cambiarCategoria() {
+    console.log(this.categoria)
+    this.agregarTag(this.categoria)
   }
 
   actualizarFoto() {

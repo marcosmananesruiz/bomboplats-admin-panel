@@ -27,6 +27,14 @@
       <p class="deletableElement">- {{icon.name}} <button title="Eliminar" (click)="reiniciarIcono()">X</button></p>
     }
 
+    <label for="categorias">Categoria:</label>
+    <select [(ngModel)]="categoria"  name="categorias" (change)="cambiarCategoria()" >
+      <option value="ENTRANTES">Entrate</option>
+      <option value="PLATO PRINCIPAL">Plato Principal</option>
+      <option value="POSTRE">Postre</option>
+      <option value="BEBIDAS">Bebidas</option>
+    </select>
+
     <label for="tags">Tags:</label>
     @for (tag of tags; track $index) {
       <p class="deletableElement">- {{tag}} <button title="Eliminar" (click)="eliminarTag($index)">X</button></p>

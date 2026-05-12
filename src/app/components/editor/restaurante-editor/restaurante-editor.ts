@@ -6,6 +6,7 @@ import { PlatoSelector } from "../../selector/plato-selector/plato-selector";
 import { DireccionSelector } from "../../selector/direccion-selector/direccion-selector";
 import { S3Service, URLType } from '../../../service/s3-service/s3-service';
 import { ImageInput } from "../../util/image-input/image-input";
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-restaurante-editor',
@@ -118,12 +119,18 @@ export class RestauranteEditor implements OnInit {
           }
         })
       }
+
+      if (this.cachedImages.length <= 0) {
+        this.updateRestaurante()
+      }
+
     } else {
       this.updateRestaurante()
     }
   }
 
   updateRestaurante() {
+    this.direcciones.forEach(direccion => console.log(direccion))
     this.restauranteService.updateRestaurante({
       id: this.restaurante?.id,
       nombre: this.nombre,
@@ -162,8 +169,9 @@ export class RestauranteEditor implements OnInit {
   }
 
   eliminarIconUrl(index: number) {
-    if ((this.iconUrls.length - 1) <= 0) {
-      alert("El Restaurante tiene que tener al menos una foto!")
+    if (((this.iconUrls.length - 1) <= 0) && (this.cachedImages.length - 1) <= 0) {
+      this.iconUrls.splice(index, 1)
+      this.iconUrls.push(this.s3Service.DEFAULT_RESTAURANTE_PIC)
     } else {
       this.iconUrls.splice(index, 1)
     }
@@ -219,5 +227,15 @@ export class RestauranteEditor implements OnInit {
 
   showProfilePic(iconUrl: string) {
     window.open(this.s3Service.getFullImageUrl(iconUrl), "_blank")
+  }
+
+  private async urlToFile(url: string, fileName?: string): Promise<File> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    // Inferir nombre del archivo desde la URL si no se proporciona
+    const name = fileName ?? url.split('/').pop() ?? 'file';
+
+    return new File([blob], name, { type: blob.type });
   }
 }

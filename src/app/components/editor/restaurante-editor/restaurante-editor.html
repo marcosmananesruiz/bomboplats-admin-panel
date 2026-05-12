@@ -35,7 +35,12 @@
         <button class="remove-btn" title="Ver" (click)="showProfilePic(iconUrl)">🔍</button>
       </p>
     }
-    <app-image-input></app-image-input>
+    @for (icon of cachedImages; track $index) {
+      <p class="deletableElement">- {{icon.name}}
+        <button class="remove-btn" title="Poner foto por defecto" (click)="eliminarIconUrl($index)">X</button>
+      </p>
+    }
+    <app-image-input (onImageSelected)="agregarIcono($event)"></app-image-input>
     <label for="platos">Platos:</label>
     @for (plato of platos; track $index) {
       <p class="deletableElement">- {{plato.id}} - {{plato.nombre}} <button class="remove-btn" title="Eliminar" (click)="eliminarPlato($index)">X</button></p>

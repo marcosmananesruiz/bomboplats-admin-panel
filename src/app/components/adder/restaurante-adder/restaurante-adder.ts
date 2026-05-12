@@ -1,6 +1,7 @@
+import { Restaurante } from './../../../api/model/restaurante';
 import { S3Service, URLType } from '../../../service/s3-service/s3-service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Direccion, Plato, Restaurante, RestauranteControllerService } from '../../../api';
+import { Direccion, Plato, RestauranteControllerService } from '../../../api';
 import { DireccionSelector } from '../../selector/direccion-selector/direccion-selector';
 import { FormsModule } from "@angular/forms";
 import { StringInput } from "../../util/string-input/string-input";
@@ -110,13 +111,32 @@ export class RestauranteAdder implements OnInit {
               this.iconUrls.push(url)
 
               if (i === this.icons.length - 1) {
-                alert("Se ha guardado el restaurante")
+
+                this.restauranteService.updateRestaurante({
+                  id: this.restaurante?.id,
+                  nombre: this.restaurante?.nombre,
+                  description: this.restaurante?.description,
+                  iconUrls: this.iconUrls,
+                  rating: this.restaurante?.rating,
+                  direcciones: this.restaurante?.direcciones,
+                  tags: this.restaurante?.tags,
+                  platos: this.restaurante?.platos
+                }).subscribe({
+                  next: (data) => {
+                    alert("Se ha guardado el restaurante")
+                  },
+                  error: (err) => { this.onError(err) }
+                })
               }
             },
             error: (err) => this.onError(err)
           })
         }
+      } else {
+        console.error("no hay restaurantes aun")
       }
+    } else {
+      console.error("no hay fotos")
     }
   }
 
